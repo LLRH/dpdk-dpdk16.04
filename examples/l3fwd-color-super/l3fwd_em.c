@@ -830,9 +830,15 @@ find_mongodb (CoLoR_get_t *get_hdr)
 	while (mongoc_cursor_next (cursor, &doc)) 
 	{
 		str = bson_as_json (doc, NULL);
-		printf ("[FROM %s] MongoDB %s\n", str,__FUNCTION__);
+		printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
 		//bson_free (str);
 	}
+
+    //TODO:测试删除的功能
+    if (!mongoc_collection_remove (
+            collection, MONGOC_REMOVE_SINGLE_REMOVE, query, NULL, &error)) {
+        fprintf (stderr, "Delete failed: %s\n", error.message);
+    }
 
    bson_destroy (query);
    bson_destroy (&reply);
@@ -849,8 +855,6 @@ find_mongodb (CoLoR_get_t *get_hdr)
 
    return 0;
 }
-
-
 
 
 static inline __attribute__((always_inline)) uint16_t
@@ -971,6 +975,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 				
 			CoLoR_get_t * get_hdr=(CoLoR_get_t *)(ipv4_hdr+1);
 			find_mongodb (get_hdr);
+
+            //TODO:测试删除的功能，查找后并删除这个记录
+
+
 		
 		}
 		
