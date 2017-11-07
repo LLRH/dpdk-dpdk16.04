@@ -1,0 +1,6 @@
+sudo cat /proc/meminfo | grep Huge
+umount /mnt/huge
+rm -rf /mnt/huge
+mkdir -p /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+sudo cat /proc/meminfo | grep Huge
