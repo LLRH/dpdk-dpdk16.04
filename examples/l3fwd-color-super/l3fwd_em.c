@@ -794,8 +794,8 @@ find_mongodb (CoLoR_get_t *get_hdr)
    /*
     * Get a handle on the database "db_name" and collection "coll_name"
     */
-   database = mongoc_client_get_database (client, "db_name");
-   collection = mongoc_client_get_collection (client, "db_name", "coll_name");
+   database = mongoc_client_get_database (client, DB_NAME);
+   collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
 
    /*
     * Do work. This example pings the database, prints the result as JSON and
@@ -830,7 +830,7 @@ find_mongodb (CoLoR_get_t *get_hdr)
 	while (mongoc_cursor_next (cursor, &doc)) 
 	{
 		str = bson_as_json (doc, NULL);
-		printf ("%s\n", str);
+		printf ("[FROM %s] MongoDB %s\n", str,__FUNCTION__);
 		//bson_free (str);
 	}
 
