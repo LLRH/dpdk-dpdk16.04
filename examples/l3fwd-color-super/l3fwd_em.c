@@ -544,6 +544,10 @@ em_get_dst_port_ipv4x8_pumpking(struct lcore_conf *qconf, struct rte_mbuf *m[8],
 	if (dst_port[7] >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << dst_port[7]) == 0)dst_port[7] = portid;
 }
 
+//TODO:MongoDB数据中对应的 数据和集合名称
+const char* DB_NAME="CoLoR";
+const char* COLL_NAME="REGISTER_INFO";
+
 void getTime(char * str)
 {
 	str[0]='\0';
@@ -589,8 +593,8 @@ main_mongodb ()
    /*
     * Get a handle on the database "db_name" and collection "coll_name"
     */
-   database = mongoc_client_get_database (client, "db_name");
-   collection = mongoc_client_get_collection (client, "db_name", "coll_name");
+   database = mongoc_client_get_database (client, DB_NAME);
+   collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
 
    /*
     * Do work. This example pings the database, prints the result as JSON and
@@ -687,8 +691,8 @@ insert_mongodb (control_register_t *control_register_hdr)
    /*
     * Get a handle on the database "db_name" and collection "coll_name"
     */
-   database = mongoc_client_get_database (client, "db_name");
-   collection = mongoc_client_get_collection (client, "db_name", "coll_name");
+   database = mongoc_client_get_database (client, DB_NAME);
+   collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
 
    /*
     * Do work. This example pings the database, prints the result as JSON and
@@ -829,8 +833,6 @@ find_mongodb (CoLoR_get_t *get_hdr)
 		printf ("%s\n", str);
 		//bson_free (str);
 	}
-
-
 
    bson_destroy (query);
    bson_destroy (&reply);
