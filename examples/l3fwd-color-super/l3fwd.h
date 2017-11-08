@@ -254,6 +254,6 @@ lpm_get_ipv6_l3fwd_lookup_struct(const int socketid);
 #include <mongoc.h>
 
 //TODO:MongoDB数据中对应的 数据和集合名称
-extern const char* DB_NAME="CoLoR";
-extern const char* COLL_NAME="REGISTER_INFO";
+const char* DB_NAME="CoLoR";
+const char* COLL_NAME="REGISTER_INFO";
 #endif  /* __L3_FWD_H__ */
