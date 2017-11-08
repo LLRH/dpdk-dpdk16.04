@@ -69,11 +69,6 @@
 //For NASH
 #include "nash.h"
 
-//For mongodb
-#include <bson.h>
-#include <bcon.h>
-#include <mongoc.h>
-
 #ifdef RTE_MACHINE_CPUFLAG_SSE4_2
 #include <rte_hash_crc.h>
 #define DEFAULT_HASH_FUNC       rte_hash_crc
@@ -544,9 +539,6 @@ em_get_dst_port_ipv4x8_pumpking(struct lcore_conf *qconf, struct rte_mbuf *m[8],
 	if (dst_port[7] >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << dst_port[7]) == 0)dst_port[7] = portid;
 }
 
-//TODO:MongoDB数据中对应的 数据和集合名称
-const char* DB_NAME="CoLoR";
-const char* COLL_NAME="REGISTER_INFO";
 
 void getTime(char * str)
 {
