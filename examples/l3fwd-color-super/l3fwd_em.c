@@ -858,7 +858,7 @@ find_mongodb (CoLoR_get_t *get_hdr)
    return 0;
 }
 
-
+//TODO:删除mongoDB数据库的内容
 int
 delete_mongodb (control_register_t *control_register_hdr)
 {
@@ -913,7 +913,7 @@ delete_mongodb (control_register_t *control_register_hdr)
 //------
     char *L_SID="l_sid";
     char l_sid[256];
-    arrayToHexStr(&get_hdr->l_sid[0], L_SID_LENGTH, l_sid);
+    arrayToHexStr(&control_register_hdr->l_sid[0], L_SID_LENGTH, l_sid);
 
 
     bson_t * query=BCON_NEW

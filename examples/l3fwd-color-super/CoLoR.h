@@ -58,6 +58,8 @@ struct control_public_header {
 }__attribute__((__packed__));
 typedef struct control_public_header control_public_header_t;
 
+//日了够了啊
+
 #define L_SID_LENGTH 20
 struct control_register{
 	//SID内容
