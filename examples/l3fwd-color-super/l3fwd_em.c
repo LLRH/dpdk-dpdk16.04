@@ -928,6 +928,12 @@ int delete_mongodb (control_register_t *control_register_hdr)
         //bson_free (str);
     }
 
+	//TODO:删除的功能
+	if (!mongoc_collection_remove (
+			collection, MONGOC_REMOVE_SINGLE_REMOVE, query, NULL, &error)) {
+		fprintf (stderr, "Delete failed: %s\n", error.message);
+	}
+
     bson_destroy (query);
     bson_destroy (&reply);
     bson_destroy (command);
