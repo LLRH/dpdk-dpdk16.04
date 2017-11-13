@@ -1067,9 +1067,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 					case 0x2: printf(" (image)");	break;
 					case 0x3: printf(" (video)");	break;
 				}
-			
-				//接下来就要把内容注册到哈希表里面
-				//这样哈希表会很大阿？如果机器不买的话，那该怎么办？
 
 
 			}
