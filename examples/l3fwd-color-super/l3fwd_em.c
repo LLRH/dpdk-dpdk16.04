@@ -765,8 +765,8 @@ insert_mongodb (control_register_t *control_register_hdr)
    return 0;
 }
 
-int
-find_mongodb (CoLoR_get_t *get_hdr)
+
+int find_mongodb (CoLoR_get_t *get_hdr)
 {
    mongoc_client_t      *client;
    mongoc_database_t    *database;
@@ -859,8 +859,7 @@ find_mongodb (CoLoR_get_t *get_hdr)
 }
 
 //TODO:删除mongoDB数据库的内容
-int
-delete_mongodb (control_register_t *control_register_hdr)
+int delete_mongodb (control_register_t *control_register_hdr)
 {
     mongoc_client_t      *client;
     mongoc_database_t    *database;
@@ -909,7 +908,6 @@ delete_mongodb (control_register_t *control_register_hdr)
     str = bson_as_json (&reply, NULL);
     printf ("%s\n", str);
 
-
 //------
     char *L_SID="l_sid";
     char l_sid[256];
@@ -928,12 +926,6 @@ delete_mongodb (control_register_t *control_register_hdr)
         str = bson_as_json (doc, NULL);
         printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
         //bson_free (str);
-    }
-
-    //TODO:测试删除的功能
-    if (!mongoc_collection_remove (
-            collection, MONGOC_REMOVE_SINGLE_REMOVE, query, NULL, &error)) {
-        fprintf (stderr, "Delete failed: %s\n", error.message);
     }
 
     bson_destroy (query);
@@ -1003,9 +995,18 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 				
 				switch(control_register_hdr->type)
 				{
-					case 1: printf(" (注册)");	break;
-					case 2: printf(" (更新)");	break;
-					case 3: printf(" (删除)");	break;
+					case REGISTER_TYPE_ADD:
+						printf(" (注册)");
+						insert_mongodb(control_register_hdr);
+						break;
+					case
+						REGISTER_TYPE_UPDATE:
+						printf(" (更新)");
+						delete_mongodb(control_register_hdr);
+						break;
+					case REGISTER_TYPE_DELETE:
+						printf(" (删除)");
+						break;
 					default: printf(" (未知)");
 				}
 				
@@ -1060,9 +1061,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 			
 				//接下来就要把内容注册到哈希表里面
 				//这样哈希表会很大阿？如果机器不买的话，那该怎么办？
-				
-				//TODO:For mongodb插入到mongoDB
-	 			insert_mongodb(control_register_hdr);
+
+
 			}
 		
 		}
