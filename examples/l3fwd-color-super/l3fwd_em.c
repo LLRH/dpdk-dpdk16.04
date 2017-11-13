@@ -1009,7 +1009,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 						break;
 					case
 						REGISTER_TYPE_UPDATE:
-						update_mongodb(control_public_hdr);
+						update_mongodb(control_register_hdr);
 						printf(" (更新)");
 						break;
 					case REGISTER_TYPE_DELETE:
