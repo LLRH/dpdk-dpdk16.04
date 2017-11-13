@@ -546,8 +546,8 @@ em_get_dst_port_ipv4x8_pumpking(struct lcore_conf *qconf, struct rte_mbuf *m[8],
 #include <mongoc.h>
 
 //TODO:MongoDB数据中对应的 数据和集合名称
-extern char* DB_NAME="CoLoR";
-extern char* COLL_NAME="REGISTER_INFO";
+const char* DB_NAME="CoLoR";
+const char* COLL_NAME="REGISTER_INFO";
 
 
 void getTime(char * str)
@@ -857,6 +857,101 @@ find_mongodb (CoLoR_get_t *get_hdr)
 
    return 0;
 }
+
+
+int
+delete_mongodb (control_register_t *control_register_hdr)
+{
+    mongoc_client_t      *client;
+    mongoc_database_t    *database;
+    mongoc_collection_t  *collection;
+    bson_t               *command,
+            reply;
+    bson_error_t          error;
+    char                 *str;
+    bool                  retval;
+
+    /*
+     * Required to initialize libmongoc's internals
+     */
+    mongoc_init ();
+
+    /*
+     * Create a new client instance
+     */
+    client = mongoc_client_new ("mongodb://localhost:27017");
+
+    /*
+     * Register the application name so we can track it in the profile logs
+     * on the server. This can also be done from the URI (see other examples).
+     */
+    mongoc_client_set_appname (client, "connect-example");
+
+    /*
+     * Get a handle on the database "db_name" and collection "coll_name"
+     */
+    database = mongoc_client_get_database (client, DB_NAME);
+    collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
+
+    /*
+     * Do work. This example pings the database, prints the result as JSON and
+     * performs an insert
+     */
+    command = BCON_NEW ("ping", BCON_INT32 (1));
+
+    retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
+
+    if (!retval) {
+        fprintf (stderr, "%s\n", error.message);
+        return EXIT_FAILURE;
+    }
+
+    str = bson_as_json (&reply, NULL);
+    printf ("%s\n", str);
+
+
+//------
+    char *L_SID="l_sid";
+    char l_sid[256];
+    arrayToHexStr(&get_hdr->l_sid[0], L_SID_LENGTH, l_sid);
+
+
+    bson_t * query=BCON_NEW
+            (
+                    L_SID, l_sid
+            );
+
+    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection, query, NULL, NULL);
+    const bson_t * doc;
+    while (mongoc_cursor_next (cursor, &doc))
+    {
+        str = bson_as_json (doc, NULL);
+        printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
+        //bson_free (str);
+    }
+
+    //TODO:测试删除的功能
+    if (!mongoc_collection_remove (
+            collection, MONGOC_REMOVE_SINGLE_REMOVE, query, NULL, &error)) {
+        fprintf (stderr, "Delete failed: %s\n", error.message);
+    }
+
+    bson_destroy (query);
+    bson_destroy (&reply);
+    bson_destroy (command);
+    bson_free (str);
+
+    /*
+     * Release our handles and clean up libmongoc
+     */
+    mongoc_collection_destroy (collection);
+    mongoc_database_destroy (database);
+    mongoc_client_destroy (client);
+    mongoc_cleanup ();
+
+    return 0;
+}
+
 
 
 static inline __attribute__((always_inline)) uint16_t
