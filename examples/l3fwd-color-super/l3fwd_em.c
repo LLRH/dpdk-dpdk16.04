@@ -946,11 +946,10 @@ int delete_mongodb (control_register_t *control_register_hdr)
     mongoc_database_destroy (database);
     mongoc_client_destroy (client);
     mongoc_cleanup ();
-
     return 0;
 }
 
-//TODO:更新mongoDB数据库的内容
+//TODO:更新mongoDB数据库的内容  ---》先删除，再添加！
 int update_mongodb (control_register_t *control_register_hdr)
 {
 	delete_mongodb(control_register_hdr);
@@ -1073,8 +1072,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 					case 0x2: printf(" (image)");	break;
 					case 0x3: printf(" (video)");	break;
 				}
-
-
 			}
 		
 		}
@@ -1086,8 +1083,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
             //TODO:测试删除的功能，查找后并删除这个记录
 
-
-		
 		}
 		
 		
@@ -1121,9 +1116,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 		
 		//printf("Return %d\n",portid);
 		
-		
-		return 1;
-	 	return portid;
+
+	//不要改变原来数据流的方向
+/*		return 1;
+	 	return portid;*/
 
 	#endif
 	
@@ -1638,7 +1634,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 		
 		
 		//--------------------------------------------------
-
+//:TODO 定时器向cuckoohash表中注册内容
 //This code is a timer to insert and delete the hash entry!		
 /*
 		if(lcore_id==timer1_lcore_id)

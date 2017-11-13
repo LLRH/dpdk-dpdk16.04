@@ -1,11 +1,11 @@
-
-//¼ÆËã·ÖÎª¶àÉÙ²½Öè
+ï»¿
+//è®¡ç®—åˆ†ä¸ºå¤šå°‘æ­¥éª¤
 #define step 10e3
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
 
-//Ëæ»úº¯Êı
+//éšæœºå‡½æ•°
 double mysrand(int min,int max)
 {
     if(max==min) return (double)min;
@@ -39,12 +39,12 @@ double fun(node_t node)
 void find_max(line_t line,node_t* max_node,double *max_value, line_t * max_line)
 {
     /*
-    ¸ù¾İstep¹æ¶¨µÄ²½Êı£¬Çó³ö²½²î
+    æ ¹æ®stepè§„å®šçš„æ­¥æ•°ï¼Œæ±‚å‡ºæ­¥å·®
     */
     double step_x=(line.node2.x-line.node1.x)/step;
     double step_y=(line.node2.y-line.node1.y)/step;
     /*
-    ¸ù¾İ²½²îÇó³ö×î´óÖµµÄµã
+    æ ¹æ®æ­¥å·®æ±‚å‡ºæœ€å¤§å€¼çš„ç‚¹
     */
     int i=0;
     for(i=1; i<step; i++)
@@ -60,7 +60,7 @@ void find_max(line_t line,node_t* max_node,double *max_value, line_t * max_line)
     }
 
     /*
-    ¼ÆËãÁ½¸ö¶ËµãµÄÖµ£¬²¢È¡×î´ó
+    è®¡ç®—ä¸¤ä¸ªç«¯ç‚¹çš„å€¼ï¼Œå¹¶å–æœ€å¤§
     */
     double node1_value=fun(line.node1);
     double node2_value=fun(line.node2);
@@ -78,7 +78,7 @@ void find_max(line_t line,node_t* max_node,double *max_value, line_t * max_line)
     }
 
     /*
-    ¼ÆËãÖĞµãÌØÊâµã
+    è®¡ç®—ä¸­ç‚¹ç‰¹æ®Šç‚¹
     */
     node_t node_temp= {(line.node1.x+line.node2.x)/2,(line.node1.y+line.node2.y)/2};
     double temp_value=fun(node_temp);
@@ -90,8 +90,8 @@ void find_max(line_t line,node_t* max_node,double *max_value, line_t * max_line)
     }
 }
 
-#define print 0
-//·µ»ØÑ¡ÔñµÄ±ß
+#define print 1
+//è¿”å›é€‰æ‹©çš„è¾¹
 int nash2(const double a[],const double b[],const int size)
 {
     int i,j;
@@ -159,14 +159,14 @@ int nash2(const double a[],const double b[],const int size)
 
     double p_a[size];
     double p_b[size];
-    /*Çó³öµ½ÊıµÄºÍ*/
+    /*æ±‚å‡ºåˆ°æ•°çš„å’Œ*/
     double a_reciprocal_sum=0,b_reciprocal_sum=0;
     for(i=0; i<size; i++)
     {
         a_reciprocal_sum+= 1/a[i];
         b_reciprocal_sum+= 1/b[i];
     }
-    /*Çó³ö¶ÔÓ¦µÄÑ¡Ôñ¸ÅÂÊ*/
+    /*æ±‚å‡ºå¯¹åº”çš„é€‰æ‹©æ¦‚ç‡*/
     for(i=0; i<size; i++)
     {
         p_a[i]= (1/b[i])/b_reciprocal_sum;
@@ -176,7 +176,7 @@ int nash2(const double a[],const double b[],const int size)
 #endif // print
     }
     double nash_a=0,nash_b=0;
-    /*¸ù¾İÆÚÍûÇó³öÏÂ±ß½ç*/
+    /*æ ¹æ®æœŸæœ›æ±‚å‡ºä¸‹è¾¹ç•Œ*/
     for(i=0; i<size; i++)
     {
         nash_a=nash_a+p_a[i]*p_b[i]*a[i];
