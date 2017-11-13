@@ -944,6 +944,14 @@ int delete_mongodb (control_register_t *control_register_hdr)
     return 0;
 }
 
+//TODO:更新mongoDB数据库的内容
+int update_mongodb (control_register_t *control_register_hdr)
+{
+	delete_mongodb(control_register_hdr);
+	insert_mongodb(control_register_hdr);
+    return 0;
+}
+
 
 
 static inline __attribute__((always_inline)) uint16_t
@@ -1001,11 +1009,12 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 						break;
 					case
 						REGISTER_TYPE_UPDATE:
+						update_mongodb(control_public_hdr);
 						printf(" (更新)");
-						delete_mongodb(control_register_hdr);
 						break;
 					case REGISTER_TYPE_DELETE:
 						printf(" (删除)");
+						delete_mongodb(control_register_hdr);
 						break;
 					default: printf(" (未知)");
 				}
