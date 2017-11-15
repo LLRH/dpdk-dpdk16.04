@@ -957,8 +957,6 @@ int update_mongodb (control_register_t *control_register_hdr)
     return 0;
 }
 
-
-
 static inline __attribute__((always_inline)) uint16_t
 em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,uint8_t portid)
 {
@@ -1034,8 +1032,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 						printf("\n");
 					}
 				}
-				
-				
+
 				printf("scope = %2X",control_register_hdr->scope);
 				
 				switch(control_register_hdr->scope)
@@ -1129,7 +1126,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	const void * key_array[1]={&key};
 	int res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
 	
-	//SID在另外一个Socket的那个表上，当时有两个Socket,现在只有一个
+	//TODO:SID在另外一个Socket的那个表上，当时有两个Socket,现在只有一个
 	if(next_hop==255)
 	{
 		res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct_another_socket,&key_array[0] , 1,&next_hop );
@@ -1143,8 +1140,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	return next_hop;
 }
 
-static inline void
-l3fwd_em_send_packets_pumpking(int nb_rx, struct rte_mbuf **pkts_burst,uint8_t portid, struct lcore_conf *qconf)
+static inline
+void l3fwd_em_send_packets_pumpking(int nb_rx, struct rte_mbuf **pkts_burst,uint8_t portid, struct lcore_conf *qconf)
 {
 	int32_t j=0;
 	uint16_t dst_port[MAX_PKT_BURST];
@@ -1340,7 +1337,6 @@ struct sid_port_route{
 	KeyType key_sid;
 	ValType val_port;
 };
-
 
 //For Socket1  won right SID item!
 static struct sid_port_route sid_port_route_array1[]={
