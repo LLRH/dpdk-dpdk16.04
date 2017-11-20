@@ -880,6 +880,9 @@ lcore_mainloop(__attribute__((unused)) void *arg)
 	}
 }
 
+//TODO:MongoDB数据中对应的 数据和集合名称
+const char* DB_NAME="CoLoR";
+const char* COLL_NAME="REGISTER_INFO";
 
 int
 main(int argc, char **argv)
@@ -1025,7 +1028,21 @@ main(int argc, char **argv)
 	}
 	
 	printf("[From %s]Master core %u\n!",__func__, rte_lcore_id());
-	
+
+
+    //TODO:初始化MongoDB
+    mongoc_init ();
+    client = mongoc_client_new ("mongodb://localhost:27017");
+    mongoc_client_set_appname (client, "connect-example");
+    database = mongoc_client_get_database (client, DB_NAME);
+    collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
+    command = BCON_NEW ("ping", BCON_INT32 (1));
+    retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
+    if (!retval) {
+        fprintf (stderr, "%s\n", error.message);
+        return EXIT_FAILURE;
+    }
+
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)

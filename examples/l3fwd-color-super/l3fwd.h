@@ -253,5 +253,8 @@ lpm_get_ipv6_l3fwd_lookup_struct(const int socketid);
 #include <bcon.h>
 #include <mongoc.h>
 
+mongoc_client_t      *client;
+mongoc_database_t    *database;
+mongoc_collection_t  *collection;
 
 #endif  /* __L3_FWD_H__ */
