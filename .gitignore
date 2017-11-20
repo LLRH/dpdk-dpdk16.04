@@ -3,4 +3,5 @@
 *.map
 *~
 build
+*.log
 /pangang
