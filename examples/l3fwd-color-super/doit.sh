@@ -1,4 +1,4 @@
- ./build/l3fwd -c 0x7 -n 2 -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
+ ./build/l3fwd -c 0x7 -n 2 --log-level 8 -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
 
 
 
