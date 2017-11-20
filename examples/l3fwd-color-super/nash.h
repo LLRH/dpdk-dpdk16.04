@@ -90,7 +90,7 @@ void find_max(line_t line,node_t* max_node,double *max_value, line_t * max_line)
     }
 }
 
-#define print 1
+#define print 0
 //·µ»ØÑ¡ÔñµÄ±ß
 int nash2(const double a[],const double b[],const int size)
 {
