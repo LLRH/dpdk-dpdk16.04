@@ -1,112 +1,113 @@
 #ifndef _CoLoR_H_
-#define _CoLoR_H_ 
+#define _CoLoR_H_
 
-#define CONTENTLEN 4 
+#define CONTENTLEN 4
 #define PUBKEYLEN 4
 
 typedef struct CoLoR_get
 {
-	uint8_t version_type;	//°æ±¾4Î»£¬ÀàĞÍ4Î»
-	uint8_t ttl;		//Éú´æÊ±¼ä
-	uint16_t total_len;	//×Ü³¤¶È
-	uint16_t port_src;	//Ô´¶Ë¿ÚºÅ
-	uint16_t port_dst;	//Ä¿µÄ¶Ë¿ÚºÅ
-	uint16_t minmal_PID_CP; //pid¸Ä±äµÄÖÜÆÚ
-	uint8_t PIDs;		//PIDµÄÊıÄ¿
-	uint8_t Offest_RES;     //Î»ÔËËãÈ¡Offset
-	uint32_t offset;	//Æ«ÒÆÁ¿
-	uint32_t length;	//Æ«ÒÆ³¤¶È
-	uint16_t content_len;	//¹«Ô¿³¤¶È
-	uint16_t mtu;		//×î´ó´«Êäµ¥Ôª
-	uint16_t publickey_len;	//¹«Ô¿³¤¶È
-	uint16_t checksum;	//¼ìÑéºÍ
-	uint8_t nid_sid[16];	//NID part of an SID£¬³¤¶ÈÎª16×Ö½Ú
-	uint8_t l_sid[20]; 	//SIDµÄ³¤¶ÈÎª20×Ö½Ú
-	uint8_t nid[16];	//NIDµÄ³¤¶ÈÎª16×Ö½Ú
-	uint8_t content[CONTENTLEN];	// Content characteristics
-	uint8_t publickey[PUBKEYLEN];	//¹«Ô¿
+    uint8_t version_type;	//ç‰ˆæœ¬4ä½ï¼Œç±»å‹4ä½
+    uint8_t ttl;		//ç”Ÿå­˜æ—¶é—´
+    uint16_t total_len;	//æ€»é•¿åº¦
+    uint16_t port_src;	//æºç«¯å£å·
+    uint16_t port_dst;	//ç›®çš„ç«¯å£å·
+    uint16_t minmal_PID_CP; //pidæ”¹å˜çš„å‘¨æœŸ
+    uint8_t PIDs;		//PIDçš„æ•°ç›®
+    uint8_t Offest_RES;     //ä½è¿ç®—å–Offset
+    uint32_t offset;	//åç§»é‡
+    uint32_t length;	//åç§»é•¿åº¦
+    uint16_t content_len;	//å…¬é’¥é•¿åº¦
+    uint16_t mtu;		//æœ€å¤§ä¼ è¾“å•å…ƒ
+    uint16_t publickey_len;	//å…¬é’¥é•¿åº¦
+    uint16_t checksum;	//æ£€éªŒå’Œ
+    uint8_t nid_sid[16];	//NID part of an SIDï¼Œé•¿åº¦ä¸º16å­—èŠ‚
+    uint8_t l_sid[20]; 	//SIDçš„é•¿åº¦ä¸º20å­—èŠ‚
+    uint8_t nid[16];	//NIDçš„é•¿åº¦ä¸º16å­—èŠ‚
+    uint8_t content[CONTENTLEN];	// Content characteristics
+    uint8_t publickey[PUBKEYLEN];	//å…¬é’¥
 } CoLoR_get_t;
 
-/*version_type×Ö¶Î*/
+/*version_typeå­—æ®µ*/
 #define TYPE_GET 0xA0
 #define TYPE_DTAT 0xA1
 //#define TYPE_REGISTER 0xA2
 #define TYPE_CONTROL 0xA3
 
-/*control_type×Ö¶Î*/
+/*control_typeå­—æ®µ*/
 #define control_type_register 0
 #define control_tppe_announce 1
 
 #define NID_LENGTH 16
 struct control_public_header {
-	uint8_t version_type;
-	uint8_t control_type;
-	uint8_t total_length;
-	uint16_t port_number_1;
-	uint16_t port_number_2;
-	uint16_t min_pid_change_period;
-	uint8_t ack_flag_res;
-	uint8_t pid_index;
-	uint8_t item_number;
-	uint16_t checksum;
-	uint8_t nids_s[NID_LENGTH];
-	uint8_t nid_r[NID_LENGTH];
-	uint32_t mac;
-	uint32_t offset;
-	uint32_t length;
-	//CONTENT OF ITEM;
+    uint8_t version_type;
+    uint8_t control_type;
+    uint8_t total_length;
+    uint16_t port_number_1;
+    uint16_t port_number_2;
+    uint16_t min_pid_change_period;
+    uint8_t ack_flag_res;
+    uint8_t pid_index;
+    uint8_t item_number;
+    uint16_t checksum;
+    uint8_t nids_s[NID_LENGTH];
+    uint8_t nid_r[NID_LENGTH];
+    uint32_t mac;
+    uint32_t offset;
+    uint32_t length;
+    //CONTENT OF ITEM;
 }__attribute__((__packed__));
 typedef struct control_public_header control_public_header_t;
 
-//TODO:×¢²á°üÖĞTYPE×Ö¶ÎµÄÀàĞÍ
+//TODO:æ³¨å†ŒåŒ…ä¸­TYPEå­—æ®µçš„ç±»å‹
 #define REGISTER_TYPE_ADD 0x01
 #define REGISTER_TYPE_UPDATE 0x02
 #define REGISTER_TYPE_DELETE 0x03
 
+
 #define L_SID_LENGTH 20
 struct control_register{
-	//SIDÄÚÈİ
-	uint8_t n_sid[NID_LENGTH];
-	uint8_t l_sid[L_SID_LENGTH];
-	//°üÀàĞÍ:×¢²á(0x01)£¬¸üĞÂ(0x02)£¬É¾³ı(0x03) 
-	//»ØËÍACK:SUCCESS(0x10), DUPLICATE(0x20), INVALIDE(0x30)
-	uint8_t type;
-	//Ìá¹©ÕßµÄNID
-	uint8_t nid_s[NID_LENGTH];
-	//×¢²áµÄ·¶Î§:Ä¬ÈÏÉÏ¼¶(0x01),ÉÏ¼¶ºÍ¶ÔµÈÌå(0x02)£¬±¾ÓòºÍÁÚÓò(0x03)£¬½ö±¾Óò(0x04)
-	uint8_t scope;
-	//×¢²áµÄÓĞĞ§ÆÚ
-	uint8_t time_of_validity;
-	//×¢²áµÄµ¥Î»Ê±¼ä:Ãë(0x01)£¬·ÖÖÓ(0x02)£¬Ğ¡Ê±(0x03)£¬Ìì(0x04)£¬ĞÇÆÚ(0x05)£¬ÔÂ(0x06)£¬Äê(0x07)
-	uint8_t time_unit;
-	//×¢²áÄÚÈİµÄ×Ö½ÚÊı
-	uint32_t content_size;
-	//Classification of content: txt(0x1),image(0x2),video(0x3)
-	uint32_t content_classification;
+    //SIDå†…å®¹
+    uint8_t n_sid[NID_LENGTH];
+    uint8_t l_sid[L_SID_LENGTH];
+    //åŒ…ç±»å‹:æ³¨å†Œ(0x01)ï¼Œæ›´æ–°(0x02)ï¼Œåˆ é™¤(0x03)
+    //å›é€ACK:SUCCESS(0x10), DUPLICATE(0x20), INVALIDE(0x30)
+    uint8_t type;
+    //æä¾›è€…çš„NID
+    uint8_t nid_s[NID_LENGTH];
+    //æ³¨å†Œçš„èŒƒå›´:é»˜è®¤ä¸Šçº§(0x01),ä¸Šçº§å’Œå¯¹ç­‰ä½“(0x02)ï¼Œæœ¬åŸŸå’Œé‚»åŸŸ(0x03)ï¼Œä»…æœ¬åŸŸ(0x04)
+    uint8_t scope;
+    //æ³¨å†Œçš„æœ‰æ•ˆæœŸ
+    uint8_t time_of_validity;
+    //æ³¨å†Œçš„å•ä½æ—¶é—´:ç§’(0x01)ï¼Œåˆ†é’Ÿ(0x02)ï¼Œå°æ—¶(0x03)ï¼Œå¤©(0x04)ï¼Œæ˜ŸæœŸ(0x05)ï¼Œæœˆ(0x06)ï¼Œå¹´(0x07)
+    uint8_t time_unit;
+    //æ³¨å†Œå†…å®¹çš„å­—èŠ‚æ•°
+    uint32_t content_size;
+    //Classification of content: txt(0x1),image(0x2),video(0x3)
+    uint32_t content_classification;
 };
 typedef struct control_register control_register_t;
 
-//Á½¸ö×ÔÖÎÓòÁ´Â·µÄ×î´ó¸öÊı
+//ä¸¤ä¸ªè‡ªæ²»åŸŸé“¾è·¯çš„æœ€å¤§ä¸ªæ•°
 #define MAX_NUM_PID 8
-//ÄÚÈİÍ¨¸æµÄËù¾­¹ıµÄ×ÔÖÎÓòµÄÂ·¾¶µÄ×î´ó¸öÊı
+//å†…å®¹é€šå‘Šçš„æ‰€ç»è¿‡çš„è‡ªæ²»åŸŸçš„è·¯å¾„çš„æœ€å¤§ä¸ªæ•°
 #define MAX_NUM_AS_PATH  16
 struct control_announce{
-	//pidÍ¨¸æĞ­Òé: Ç¿ÖÆ×ñÊØ(0x1)£¬ÀûÒæ×î´ó»¯(0x2), ¹©²Î¿¼(0x3)
-	uint8_t pid_agreement;
-	//Í¨¸æ·½µÄPIDÏ²ºÃ¶ÈÁĞ±í
-	uint8_t pid_number;
-	uint32_t pid[MAX_NUM_PID];
-	uint8_t pid_preference[MAX_NUM_PID];
-	//Í¨¸æµÄÂ·¾¶ÊôĞÔ
-	uint8_t as_number;
-	uint16_t as[MAX_NUM_AS_PATH];
-	//Í¨¸æ°üµÄ×î´óÌ÷Êı
-	uint8_t announce_ttl;
-	//×¢²áÄÚÈİµÄ¸öÊı,¿ÉÒÔÍ¨¸æÒ»ÏµÁĞµÄÄÚÈİ¡£¡£
-	uint16_t register_number;
-	//Ä¬ÈÏ¶¨ÒåÒ»¸ö×¢²áÄÚÈİ£¬ºóÃæ¿É±ä³¤¡£¡£
-	struct control_register register_first;
-	//±ä³¤²¿·Ö¡£¡£¿ÉÒÔ¸½´ø¸ü¶àµÄ×¢²áÌõÄ¿
+    //pidé€šå‘Šåè®®: å¼ºåˆ¶éµå®ˆ(0x1)ï¼Œåˆ©ç›Šæœ€å¤§åŒ–(0x2), ä¾›å‚è€ƒ(0x3)
+    uint8_t pid_agreement;
+    //é€šå‘Šæ–¹çš„PIDå–œå¥½åº¦åˆ—è¡¨
+    uint8_t pid_number;
+    uint32_t pid[MAX_NUM_PID];
+    uint8_t pid_preference[MAX_NUM_PID];
+    //é€šå‘Šçš„è·¯å¾„å±æ€§
+    uint8_t as_number;
+    uint16_t as[MAX_NUM_AS_PATH];
+    //é€šå‘ŠåŒ…çš„æœ€å¤§çœºæ•°
+    uint8_t announce_ttl;
+    //æ³¨å†Œå†…å®¹çš„ä¸ªæ•°,å¯ä»¥é€šå‘Šä¸€ç³»åˆ—çš„å†…å®¹ã€‚ã€‚
+    uint16_t register_number;
+    //é»˜è®¤å®šä¹‰ä¸€ä¸ªæ³¨å†Œå†…å®¹ï¼Œåé¢å¯å˜é•¿ã€‚ã€‚
+    struct control_register register_first;
+    //å˜é•¿éƒ¨åˆ†ã€‚ã€‚å¯ä»¥é™„å¸¦æ›´å¤šçš„æ³¨å†Œæ¡ç›®
 };
 
 #endif
