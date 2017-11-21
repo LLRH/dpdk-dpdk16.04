@@ -566,30 +566,34 @@ void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 	}
 }
 
+//TODO:转换的时候需要对应的字段名字
+const char* N_ISD ="n_sid";
+const char* L_SID="l_sid";
+const char* TYPE="tpye";
+const char* NID_S="nid_s";
+const char* SCOPE="scope";
+const char* TIME_OF_VALIDITY="time_of_validity";
+const char* TIME_UNIT="time_unit";
+const char* CONTENT_SIZE="content_size";
+const char* CONTENT_CLASSIFICATION="content_classification";
+#define MAX_CONVERT_LEN  256
+
 int
 insert_mongodb (control_register_t *control_register_hdr)
 {
    bson_t               *insert;
    bson_error_t          error;
 
-//------
-	char *N_SID="n_sid";	
-	char n_sid[256];
+	char n_sid[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->n_sid[0], NID_LENGTH, n_sid);
-	
-//------
-	char *L_SID="l_sid";
-	char l_sid[256];
+
+	char l_sid[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->l_sid[0], L_SID_LENGTH, l_sid);
 
-//-----
-	char *NID_S="nid_s";
-	char nid_s[256];
+	char nid_s[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->nid_s[0], NID_LENGTH, nid_s);
-	
-//------------------------
-	char *REGISTRATION_TIME="registration_time";
-	char registration_time[256];
+
+	char registration_time[MAX_CONVERT_LEN];
 	getTime(registration_time);
 
    insert = BCON_NEW 
@@ -615,8 +619,7 @@ int find_mongodb (CoLoR_get_t *get_hdr)
     bson_error_t         error;
     char                 *str;
 
-	char *L_SID="l_sid";
-	char l_sid[256];
+	char l_sid[MAX_CONVERT_LEN];
 	arrayToHexStr(&get_hdr->l_sid[0], L_SID_LENGTH, l_sid);
 
 	query=BCON_NEW
@@ -644,9 +647,7 @@ int delete_mongodb (control_register_t *control_register_hdr)
     bson_error_t        error;
     char                *str;
 
-//------
-    char *L_SID="l_sid";
-    char l_sid[256];
+    char l_sid[MAX_CONVERT_LEN];
     arrayToHexStr(&control_register_hdr->l_sid[0], L_SID_LENGTH, l_sid);
 
     query=BCON_NEW
