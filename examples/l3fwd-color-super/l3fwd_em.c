@@ -539,7 +539,7 @@ em_get_dst_port_ipv4x8_pumpking(struct lcore_conf *qconf, struct rte_mbuf *m[8],
 	if (dst_port[7] >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << dst_port[7]) == 0)dst_port[7] = portid;
 }
 
-void getTime(char * str)
+void get_register_time(char * str)
 {
 	str[0]='\0';
 	time_t timep;
@@ -550,6 +550,41 @@ void getTime(char * str)
 	char temp[256];
 	sprintf(temp,"%d:%d:%d", p->tm_hour, p->tm_min, p->tm_sec);
 	strcat(str,temp);
+}
+
+/*struct timeval
+{
+    long tv_sec; *//*秒*//*
+    long tv_usec; *//*微秒*//*
+};*/
+
+/*struct tm
+{
+    int tm_sec;  *//*秒，正常范围0-59， 但允许至61*//*
+    int tm_min;  *//*分钟，0-59*//*
+    int tm_hour; *//*小时， 0-23*//*
+    int tm_mday; *//*日，即一个月中的第几天，1-31*//*
+    int tm_mon;  *//*月， 从一月算起，0-11*//*  1+p->tm_mon;
+    int tm_year;  *//*年， 从1900至今已经多少年*//*  1900＋ p->tm_year;
+    int tm_wday; *//*星期，一周中的第几天， 从星期日算起，0-6*//*
+    int tm_yday; *//*从今年1月1日到目前的天数，范围0-365*//*
+    int tm_isdst; *//*日光节约时间的旗标*//*
+};*/
+
+void get_dead_time(char * str)
+{
+    str[0]='\0';
+
+    time_t timep;
+    struct tm *p;
+    time(&timep);
+    //TODO:测试过期时间
+    timep->tv_sec += 300;
+    p = localtime(&timep); //取得当地时间
+    sprintf (str,"%d-%d-%d ", (1900+p->tm_year), (1+p->tm_mon), p->tm_mday);
+    char temp[256];
+    sprintf(temp,"%d:%d:%d", p->tm_hour, p->tm_min, p->tm_sec);
+    strcat(str,temp);
 }
 
 //TODO:在Json字符串中，找某个字段对应的值，真时返回True
@@ -652,7 +687,10 @@ insert_mongodb (control_register_t *control_register_hdr)
     sprintf(content_classification,"%d",control_register_hdr->content_classification);
 
 	char _registration_time[MAX_CONVERT_LEN];
-	getTime(_registration_time);
+    get_register_time(_registration_time);
+
+    char _dead_time[MAX_CONVERT_LEN];
+    get_register_time(_dead_time);
 
    insert = BCON_NEW 
    	(
@@ -667,7 +705,7 @@ insert_mongodb (control_register_t *control_register_hdr)
         CONTENT_CLASSIFICATION,content_classification,
    		//-----------
    		_REGISTRATION_TIME,_registration_time,
-        _DEAD_TIME,_registration_time
+        _DEAD_TIME,_dead_time
    	);
 
    if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, insert, NULL, &error)) {
