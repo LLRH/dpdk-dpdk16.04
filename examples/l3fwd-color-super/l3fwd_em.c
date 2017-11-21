@@ -830,7 +830,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	
 	#if PRINT==PRINT_ON
 		int i=0;
-		printf("\n[%s]proto_id=%2x\n",__func__,ipv4_hdr->next_proto_id);
+        RTE_LOG(RTE_LOG_DEBUG , L3FWD, "\n[%s]proto_id=%2x\n",__func__,ipv4_hdr->next_proto_id);
 		if(ipv4_hdr->next_proto_id == TYPE_CONTROL)
 		{	
 			control_public_header_t * control_public_hdr=(control_public_header_t *)(ipv4_hdr+1);
@@ -983,7 +983,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	#endif
 	
 	CoLoR_get_t * get_hdr=(CoLoR_get_t *)( (uint8_t*)ipv4_hdr+sizeof(struct ipv4_hdr ) );	
-		
+
 	memcpy(&key,&get_hdr->nid_sid[0],36);
 	const void * key_array[1]={&key};
 	int res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
