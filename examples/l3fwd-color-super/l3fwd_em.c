@@ -615,6 +615,7 @@ const char* TIME_UNIT="time_unit";
 const char* CONTENT_SIZE="content_size";
 const char* CONTENT_CLASSIFICATION="content_classification";
 const char* _REGISTRATION_TIME ="_registration_time";
+const char* _DEAD_TIME ="_dead_time";
 #define MAX_CONVERT_LEN  256
 
 int
@@ -665,7 +666,8 @@ insert_mongodb (control_register_t *control_register_hdr)
         CONTENT_SIZE,content_size,
         CONTENT_CLASSIFICATION,content_classification,
    		//-----------
-   		_REGISTRATION_TIME,_registration_time
+   		_REGISTRATION_TIME,_registration_time,
+        _DEAD_TIME,_registration_time
    	);
 
    if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, insert, NULL, &error)) {

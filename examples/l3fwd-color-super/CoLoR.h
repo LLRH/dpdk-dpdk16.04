@@ -63,7 +63,6 @@ typedef struct control_public_header control_public_header_t;
 #define REGISTER_TYPE_UPDATE 0x02
 #define REGISTER_TYPE_DELETE 0x03
 
-
 #define L_SID_LENGTH 20
 struct control_register{
     //SID内容
