@@ -556,6 +556,8 @@ void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 	str[0]='\0';
 	char temp[10];
 	int i=0;
+    //TODO:代表16进制，可读性强
+    strcat(str,"0x");
 	for(i=0;i<len;i++)
 	{
 		//str[i]=start[i];
