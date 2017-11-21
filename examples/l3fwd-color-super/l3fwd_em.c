@@ -607,7 +607,7 @@ insert_mongodb (control_register_t *control_register_hdr)
     arrayToHexStr(control_register_hdr->time_unit,1,time_unit);
 
     char content_size[MAX_CONVERT_LEN];
-    sprintf(content_size,"%d",control_register_hdr->content_size);
+    sprintf(content_size,"%u",control_register_hdr->content_size);
 
     char content_classification[MAX_CONVERT_LEN];
     sprintf(content_classification,control_register_hdr->content_classification);
