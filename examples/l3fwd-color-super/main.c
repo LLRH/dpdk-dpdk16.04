@@ -1031,6 +1031,9 @@ main(int argc, char **argv)
 
 
     //TODO:初始化MongoDB
+	bson_t	*command, reply;
+	bson_error_t          error;
+
     mongoc_init ();
     client = mongoc_client_new ("mongodb://localhost:27017");
     mongoc_client_set_appname (client, "connect-example");
