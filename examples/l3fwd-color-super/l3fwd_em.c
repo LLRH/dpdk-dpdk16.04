@@ -543,7 +543,6 @@ em_get_dst_port_ipv4x8_pumpking(struct lcore_conf *qconf, struct rte_mbuf *m[8],
 const char* DB_NAME="CoLoR";
 const char* COLL_NAME="REGISTER_INFO";
 
-
 void getTime(char * str)
 {
 	str[0]='\0';

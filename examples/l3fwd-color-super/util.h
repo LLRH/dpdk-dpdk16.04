@@ -23,6 +23,7 @@
 #  define DBG(fmt, args...)  do {} while (0)
 #endif
 
-# define DBG_wxb(fmt, args...)  fprintf(stderr, ANSI_COLOR_GREEN"[[%s]:%s:%d] "fmt""ANSI_COLOR_RESET,__FUNC__,__FILE__,__LINE__,args)
+# define DBG_wxb(fmt ,args...)  fprintf(stderr, ANSI_COLOR_GREEN"[[%s]:%s:%d] "fmt""ANSI_COLOR_RESET,__func__,__FILE__,__LINE__,args)
+
 
 #endif
