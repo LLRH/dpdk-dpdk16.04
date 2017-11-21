@@ -881,8 +881,8 @@ lcore_mainloop(__attribute__((unused)) void *arg)
 }
 
 //TODO:MongoDB数据中对应的 数据和集合名称
-const char* DB_NAME="CoLoR";
-const char* COLL_NAME="REGISTER_INFO";
+const char* DB_NAME_GLOBAL="CoLoR";
+const char* COLL_NAME_GLOBAL="REGISTER_INFO";
 
 int
 main(int argc, char **argv)
@@ -1038,8 +1038,8 @@ main(int argc, char **argv)
     mongoc_init ();
     client = mongoc_client_new ("mongodb://localhost:27017");
     mongoc_client_set_appname (client, "connect-example");
-    database = mongoc_client_get_database (client, DB_NAME);
-    collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
+    database = mongoc_client_get_database (client, DB_NAME_GLOBAL);
+    collection = mongoc_client_get_collection (client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
     command = BCON_NEW ("ping", BCON_INT32 (1));
     retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
     if (!retval) {
