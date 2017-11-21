@@ -63,6 +63,15 @@ typedef struct control_public_header control_public_header_t;
 #define REGISTER_TYPE_UPDATE 0x02
 #define REGISTER_TYPE_DELETE 0x03
 
+//TODO:注册包中时间的单位
+#define REISTER_TIME_UNIT_SECOND    0x1
+#define REISTER_TIME_UNIT_MINITUE   0x2
+#define REISTER_TIME_UNIT_HOUR      0x3
+#define REISTER_TIME_UNIT_DAY       0x4
+#define REISTER_TIME_UNIT_WEEK      0x5
+#define REISTER_TIME_UNIT_MONTH     0x6
+#define REISTER_TIME_UNIT_YEAR      0x7
+
 #define L_SID_LENGTH 20
 struct control_register{
     //SID内容

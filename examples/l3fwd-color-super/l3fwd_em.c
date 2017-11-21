@@ -571,15 +571,41 @@ void get_register_time(char * str)
     int tm_isdst; *//*日光节约时间的旗标*//*
 };*/
 
-void get_dead_time(char * str)
+void get_dead_time(char * str,uint8_t time_of_validity,uint8_t time_unit)
 {
-    str[0]='\0';
+    uint64_t Seconds=300;
+    switch (time_unit){
+        case REISTER_TIME_UNIT_SECOND:
+            Seconds=time_of_validity;
+            break;
+        case REISTER_TIME_UNIT_MINITUE:
+            Seconds=time_of_validity*60;
+            break;
+        case REISTER_TIME_UNIT_HOUR:
+            Seconds=time_of_validity*60*60;
+            break;
+        case REISTER_TIME_UNIT_DAY:
+            Seconds=time_of_validity*60*60*24;
+            break;
+        case REISTER_TIME_UNIT_WEEK:
+            Seconds=time_of_validity*60*60*24*7;
+            break;
+        case REISTER_TIME_UNIT_MONTH:
+            Seconds=time_of_validity*60*60*24*30;
+            break;
+        case REISTER_TIME_UNIT_YEAR:
+            Seconds=time_of_validity*60*60*24*365;
+            break;
+        default:
+            //TODO:默认一个星期
+            Seconds=time_of_validity*60*60*24*7;
+    }
 
+    str[0]='\0';
     time_t timep;
     struct tm *p;
     time(&timep);
     //TODO:测试过期时间
-    int Seconds=300;
     timep += (time_t)Seconds;
     p = localtime(&timep); //取得当地时间
     sprintf (str,"%d-%d-%d ", (1900+p->tm_year), (1+p->tm_mon), p->tm_mday);
@@ -691,7 +717,7 @@ insert_mongodb (control_register_t *control_register_hdr)
     get_register_time(_registration_time);
 
     char _dead_time[MAX_CONVERT_LEN];
-    get_dead_time(_dead_time);
+    get_dead_time(_dead_time,control_register_hdr->time_of_validity,control_register_hdr->time_unit);
 
    insert = BCON_NEW 
    	(
