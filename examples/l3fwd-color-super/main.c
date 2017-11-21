@@ -1153,6 +1153,13 @@ main(int argc, char **argv)
 		}
 	}
 
+
+	//TODO:清楚mongoDB的连接
+	mongoc_collection_destroy (collection);
+	mongoc_database_destroy (database);
+	mongoc_client_destroy (client);
+	mongoc_cleanup ();
+
 	/* stop ports */
 	for (portid = 0; portid < nb_ports; portid++) {
 		if ((enabled_port_mask & (1 << portid)) == 0)

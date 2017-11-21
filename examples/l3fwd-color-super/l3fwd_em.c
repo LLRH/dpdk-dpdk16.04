@@ -657,9 +657,6 @@ void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 int
 insert_mongodb (control_register_t *control_register_hdr)
 {
-   mongoc_client_t      *client;
-   mongoc_database_t    *database;
-   mongoc_collection_t  *collection;
    bson_t               *command,
                          reply,
                         *insert;
@@ -667,43 +664,6 @@ insert_mongodb (control_register_t *control_register_hdr)
    char                 *str;
    bool                  retval;
 
-   /*
-    * Required to initialize libmongoc's internals
-    */
-   mongoc_init ();
-
-   /*
-    * Create a new client instance
-    */
-   client = mongoc_client_new ("mongodb://localhost:27017");
-
-   /*
-    * Register the application name so we can track it in the profile logs
-    * on the server. This can also be done from the URI (see other examples).
-    */
-   mongoc_client_set_appname (client, "connect-example");
-
-   /*
-    * Get a handle on the database "db_name" and collection "coll_name"
-    */
-   database = mongoc_client_get_database (client, DB_NAME);
-   collection = mongoc_client_get_collection (client, DB_NAME, COLL_NAME);
-
-   /*
-    * Do work. This example pings the database, prints the result as JSON and
-    * performs an insert
-    */
-   command = BCON_NEW ("ping", BCON_INT32 (1));
-
-   retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
-
-   if (!retval) {
-      fprintf (stderr, "%s\n", error.message);
-      return EXIT_FAILURE;
-   }
-
-   str = bson_as_json (&reply, NULL);
-   printf ("%s\n", str);
 
 //------
 	char *N_SID="n_sid";	
@@ -746,15 +706,6 @@ insert_mongodb (control_register_t *control_register_hdr)
    bson_destroy (&reply);
    bson_destroy (command);
    bson_free (str);
-
-   /*
-    * Release our handles and clean up libmongoc
-    */
-   mongoc_collection_destroy (collection);
-   mongoc_database_destroy (database);
-   mongoc_client_destroy (client);
-   mongoc_cleanup ();
-
    return 0;
 }
 
