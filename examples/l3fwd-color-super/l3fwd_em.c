@@ -654,15 +654,12 @@ void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 		strcat(str,temp);
 	}
 }
+
 int
 insert_mongodb (control_register_t *control_register_hdr)
 {
-   bson_t               *command,
-                         reply,
-                        *insert;
+   bson_t               *insert;
    bson_error_t          error;
-   char                 *str;
-
 
 //------
 	char *N_SID="n_sid";	
@@ -684,8 +681,7 @@ insert_mongodb (control_register_t *control_register_hdr)
 	char *REGISTRATION_TIME="registration_time";
 	char registration_time[256];
 	getTime(registration_time);
-	
-	 	
+
    insert = BCON_NEW 
    	(
    		N_SID, n_sid, 
@@ -702,8 +698,6 @@ insert_mongodb (control_register_t *control_register_hdr)
    }
 
    bson_destroy (insert);
-   bson_destroy (command);
-   bson_free (str);
    return 0;
 }
 
@@ -714,10 +708,6 @@ int find_mongodb (CoLoR_get_t *get_hdr)
                          reply;
    bson_error_t          error;
    char                 *str;
-
-   str = bson_as_json (&reply, NULL);
-   printf ("%s\n", str);
-
 
 //------
 	char *L_SID="l_sid";
