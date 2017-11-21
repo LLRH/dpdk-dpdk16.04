@@ -79,7 +79,7 @@
 #include <cmdline_parse_etheraddr.h>
 
 #include "l3fwd.h"
-
+#include "util.h"
 
 //WenXingbeng
 #include <rte_timer.h>
@@ -1043,6 +1043,12 @@ main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+	char *str = bson_as_json (&reply, NULL);
+	printf ("%s\n", str);
+	DBG("%s",str);
+
+	bson_destroy (command);
+	bson_free (str);
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)
