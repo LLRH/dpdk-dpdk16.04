@@ -1048,7 +1048,7 @@ main(int argc, char **argv)
     }
 
 	char *str = bson_as_json (&reply, NULL);
-	DBG("DBG test %s\n",str);
+	DBG_wxb("DBG test %s\n",str);
 
 	bson_destroy (command);
 	bson_free (str);
