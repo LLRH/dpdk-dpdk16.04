@@ -552,6 +552,42 @@ void getTime(char * str)
 	strcat(str,temp);
 }
 
+//TODO:在Json字符串中，找某个字段对应的值，真时返回True
+bool Json_get_by_field(char *json_str, char *field_str, char *value_str) {
+    bool result= false;
+    int json_str_size = strlen(json_str);
+    int field_str_size = strlen(field_str);
+    int i;
+    for (i = 0; i < json_str_size; i++) {
+        int index_i = i;
+        int index_j = 0;
+        int flag = 0;
+        while (index_i < json_str_size && index_j < field_str_size && json_str[index_i] == field_str[index_j]) {
+            index_i++;
+            index_j++;
+            flag = 1;
+        }
+        //TODO:匹配成功,并且只返回一个
+        if (index_j == field_str_size && flag == 1) {
+            result= true;
+            //+1是为了过掉 "
+            char *temp = json_str + i + field_str_size + 1;
+            while (*temp != '"') {
+                temp++;
+            }
+            temp++;
+            int index = 0;
+            while (*temp != '"') {
+                value_str[index++] = *(temp++);
+            }
+            value_str[index] = '\0';
+            return result;
+        }
+    }
+    value_str[0] = '\0';
+    return result;
+}
+
 void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 	str[0]='\0';
 	char temp[10];
@@ -660,6 +696,13 @@ int find_mongodb (CoLoR_get_t *get_hdr)
 	{
 		str = bson_as_json (doc, NULL);
 		printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
+
+        char *field_str = "l_sid";
+        char value_str[100];
+        if(Json_get_by_field(str, field_str, value_str)){
+            DBG_wxb("value_str=%s\n", value_str);
+        }
+
 		bson_free (str);
 	}
 
