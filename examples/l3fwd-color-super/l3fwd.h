@@ -257,4 +257,8 @@ mongoc_client_t      *client;
 mongoc_database_t    *database;
 mongoc_collection_t  *collection;
 
+//TODO:MongoDB数据中对应的 数据和集合名称
+const char* DB_NAME_GLOBAL="CoLoR";
+const char* COLL_NAME_GLOBAL="REGISTER_INFO";
+
 #endif  /* __L3_FWD_H__ */
