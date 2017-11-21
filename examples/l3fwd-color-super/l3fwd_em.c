@@ -691,7 +691,7 @@ insert_mongodb (control_register_t *control_register_hdr)
     get_register_time(_registration_time);
 
     char _dead_time[MAX_CONVERT_LEN];
-    get_register_time(_dead_time);
+    get_dead_time(_dead_time);
 
    insert = BCON_NEW 
    	(
