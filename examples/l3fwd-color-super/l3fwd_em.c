@@ -830,6 +830,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	
 	#if PRINT==PRINT_ON
 		int i=0;
+        RTE_LOG(INFO, L3FWD, "entering main loop on lcore %u\n", 5);
         RTE_LOG(INFO , L3FWD, "proto_id=%2x\n",ipv4_hdr->next_proto_id);
 		if(ipv4_hdr->next_proto_id == TYPE_CONTROL)
 		{	
