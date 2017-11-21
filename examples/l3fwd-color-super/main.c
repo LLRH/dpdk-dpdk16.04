@@ -880,6 +880,15 @@ lcore_mainloop(__attribute__((unused)) void *arg)
 	}
 }
 
+//TODO:定义
+mongoc_client_t      *client;
+mongoc_database_t    *database;
+mongoc_collection_t  *collection;
+
+char* DB_NAME_GLOBAL="CoLoR";
+char* COLL_NAME_GLOBAL="REGISTER_INFO";
+
+
 int
 main(int argc, char **argv)
 {

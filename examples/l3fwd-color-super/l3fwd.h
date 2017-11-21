@@ -253,12 +253,12 @@ lpm_get_ipv6_l3fwd_lookup_struct(const int socketid);
 #include <bcon.h>
 #include <mongoc.h>
 
-mongoc_client_t      *client;
-mongoc_database_t    *database;
-mongoc_collection_t  *collection;
+extern mongoc_client_t      *client;
+extern mongoc_database_t    *database;
+extern  mongoc_collection_t  *collection;
 
 //TODO:MongoDB数据中对应的 数据和集合名称
-const char* DB_NAME_GLOBAL="CoLoR";
-const char* COLL_NAME_GLOBAL="REGISTER_INFO";
+extern char* DB_NAME_GLOBAL;
+extern char* COLL_NAME_GLOBAL;
 
 #endif  /* __L3_FWD_H__ */
