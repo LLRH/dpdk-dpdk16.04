@@ -38,7 +38,7 @@ typedef char ValType;
 
 
 /* set DEBUG to 1 to enable debug output */
-#define DEBUG 1
+#define DEBUG_CUCKOO 1
 
 
 #endif
