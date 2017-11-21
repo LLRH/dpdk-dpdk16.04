@@ -602,6 +602,7 @@ insert_mongodb (control_register_t *control_register_hdr)
    		N_SID, n_sid, 
    		L_SID, l_sid,
    		NID_S, nid_s,
+        TYPE, control_register_hdr->type,
    		//-----------
    		_REGISTRATION_TIME,_registration_time
    	);
