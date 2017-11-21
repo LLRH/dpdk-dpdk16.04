@@ -579,7 +579,7 @@ void get_dead_time(char * str)
     struct tm *p;
     time(&timep);
     //TODO:测试过期时间
-    timep->tv_sec += 300;
+    timep.tv_sec += 300;
     p = localtime(&timep); //取得当地时间
     sprintf (str,"%d-%d-%d ", (1900+p->tm_year), (1+p->tm_mon), p->tm_mday);
     char temp[256];
