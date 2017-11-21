@@ -623,6 +623,9 @@ insert_mongodb (control_register_t *control_register_hdr)
         TYPE,  type,
    		L_SID, l_sid,
    		NID_S, nid_s,
+        SCOPE, scope,
+        TIME_OF_VALIDITY,time_of_validity,
+        TIME_UNIT,time_unit,
         CONTENT_SIZE,content_size,
         CONTENT_CLASSIFICATION,content_classification,
    		//-----------
