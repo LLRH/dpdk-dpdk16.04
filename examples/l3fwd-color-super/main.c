@@ -1033,6 +1033,7 @@ main(int argc, char **argv)
     //TODO:初始化MongoDB
 	bson_t	*command, reply;
 	bson_error_t          error;
+	bool                  retval;
 
     mongoc_init ();
     client = mongoc_client_new ("mongodb://localhost:27017");
