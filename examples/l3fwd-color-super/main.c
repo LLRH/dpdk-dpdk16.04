@@ -905,6 +905,7 @@ main(int argc, char **argv)
 	/* init EAL */
 	ret = rte_eal_init(argc, argv);
 
+    DBG_wxb("Please the log of DPDK in the dpdk.log\n");
     FILE *log = fopen("dpdk.log", "a+");
     if(log == NULL){
         printf("Cannot configure log\n");
