@@ -601,7 +601,7 @@ insert_mongodb (control_register_t *control_register_hdr)
     arrayToHexStr(&control_register_hdr->scope,1,scope);
 
     char time_of_validity[MAX_CONVERT_LEN];
-    arrayToHexStr(control_register_hdr->time_of_validity,1,time_of_validity);
+    arrayToHexStr(&control_register_hdr->time_of_validity,1,time_of_validity);
 
     char time_unit[MAX_CONVERT_LEN];
     arrayToHexStr(&control_register_hdr->time_unit,1,time_unit);
