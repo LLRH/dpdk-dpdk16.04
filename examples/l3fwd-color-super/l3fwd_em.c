@@ -567,7 +567,7 @@ void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 }
 
 //TODO:转换的时候需要对应的字段名字
-const char* N_ISD ="n_sid";
+const char* N_SID ="n_sid";
 const char* L_SID="l_sid";
 const char* TYPE="tpye";
 const char* NID_S="nid_s";
@@ -576,6 +576,7 @@ const char* TIME_OF_VALIDITY="time_of_validity";
 const char* TIME_UNIT="time_unit";
 const char* CONTENT_SIZE="content_size";
 const char* CONTENT_CLASSIFICATION="content_classification";
+const char* _REGISTRATION_TIME ="_registration_time";
 #define MAX_CONVERT_LEN  256
 
 int
@@ -593,8 +594,8 @@ insert_mongodb (control_register_t *control_register_hdr)
 	char nid_s[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->nid_s[0], NID_LENGTH, nid_s);
 
-	char registration_time[MAX_CONVERT_LEN];
-	getTime(registration_time);
+	char _registration_time[MAX_CONVERT_LEN];
+	getTime(_registration_time);
 
    insert = BCON_NEW 
    	(
@@ -602,7 +603,7 @@ insert_mongodb (control_register_t *control_register_hdr)
    		L_SID, l_sid,
    		NID_S, nid_s,
    		//-----------
-   		REGISTRATION_TIME_X,registration_time
+   		_REGISTRATION_TIME,_registration_time
    	);
 
    if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, insert, NULL, &error)) {
