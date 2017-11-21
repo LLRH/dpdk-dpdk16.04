@@ -602,7 +602,7 @@ insert_mongodb (control_register_t *control_register_hdr)
    		L_SID, l_sid,
    		NID_S, nid_s,
    		//-----------
-   		REGISTRATION_TIME,registration_time
+   		REGISTRATION_TIME_X,registration_time
    	);
 
    if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, insert, NULL, &error)) {
