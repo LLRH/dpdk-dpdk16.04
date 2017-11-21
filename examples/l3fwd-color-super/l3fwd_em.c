@@ -594,15 +594,18 @@ insert_mongodb (control_register_t *control_register_hdr)
 	char nid_s[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->nid_s[0], NID_LENGTH, nid_s);
 
+    char type[MAX_CONVERT_LEN];
+    arrayToHexStr(&control_register_hdr->type,1,type);
+
 	char _registration_time[MAX_CONVERT_LEN];
 	getTime(_registration_time);
 
    insert = BCON_NEW 
    	(
-   		N_SID, n_sid, 
+   		N_SID, n_sid,
+        TYPE,  type,
    		L_SID, l_sid,
    		NID_S, nid_s,
-        TYPE, control_register_hdr->type,
    		//-----------
    		_REGISTRATION_TIME,_registration_time
    	);
