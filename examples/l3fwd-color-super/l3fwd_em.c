@@ -588,14 +588,29 @@ insert_mongodb (control_register_t *control_register_hdr)
 	char n_sid[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->n_sid[0], NID_LENGTH, n_sid);
 
+    char type[MAX_CONVERT_LEN];
+    arrayToHexStr(&control_register_hdr->type,1,type);
+
 	char l_sid[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->l_sid[0], L_SID_LENGTH, l_sid);
 
 	char nid_s[MAX_CONVERT_LEN];
 	arrayToHexStr(&control_register_hdr->nid_s[0], NID_LENGTH, nid_s);
 
-    char type[MAX_CONVERT_LEN];
-    arrayToHexStr(&control_register_hdr->type,1,type);
+    char scope[MAX_CONVERT_LEN];
+    arrayToHexStr(&control_register_hdr->scope,1,scope);
+
+    char time_of_validity[MAX_CONVERT_LEN];
+    arrayToHexStr(control_register_hdr->time_of_validity,1,time_of_validity);
+
+    char time_unit[MAX_CONVERT_LEN];
+    arrayToHexStr(control_register_hdr->time_unit,1,time_unit);
+
+    char content_size[MAX_CONVERT_LEN];
+    sprintf(content_size,"%d",control_register_hdr->content_size);
+
+    char content_classification[MAX_CONVERT_LEN];
+    sprintf(content_classification,control_register_hdr->content_classification);
 
 	char _registration_time[MAX_CONVERT_LEN];
 	getTime(_registration_time);
@@ -606,6 +621,8 @@ insert_mongodb (control_register_t *control_register_hdr)
         TYPE,  type,
    		L_SID, l_sid,
    		NID_S, nid_s,
+        CONTENT_SIZE,content_size,
+        CONTENT_CLASSIFICATION,content_classification,
    		//-----------
    		_REGISTRATION_TIME,_registration_time
    	);
