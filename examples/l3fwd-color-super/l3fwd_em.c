@@ -636,13 +636,13 @@ insert_mongodb (control_register_t *control_register_hdr)
 	arrayToHexStr(&control_register_hdr->nid_s[0], NID_LENGTH, nid_s);
 
     char scope[MAX_CONVERT_LEN];
-    arrayToHexStr(&control_register_hdr->scope,1,scope);
+    sprintf(scope,"%d",control_register_hdr->scope);
 
     char time_of_validity[MAX_CONVERT_LEN];
-    arrayToHexStr(&control_register_hdr->time_of_validity,1,time_of_validity);
+    sprintf(time_of_validity,"%d",control_register_hdr->time_of_validity);
 
     char time_unit[MAX_CONVERT_LEN];
-    arrayToHexStr(&control_register_hdr->time_unit,1,time_unit);
+    sprintf(time_unit,"%d",control_register_hdr->time_unit);
 
     char content_size[MAX_CONVERT_LEN];
     sprintf(content_size,"%d",control_register_hdr->content_size);
