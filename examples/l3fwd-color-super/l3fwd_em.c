@@ -875,11 +875,11 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
 				switch(control_register_hdr->scope)
 				{
-					case 1: LOG_TEMP=" (默认上级)";	break;
-					case 2:  LOG_TEMP=" (上级对等体)";	break;
-					case 3:  LOG_TEMP=" (本域和邻域)";	break;
-					case 4:  LOG_TEMP=" (仅本域)";	break;
-					default:  LOG_TEMP=" (未知)";
+					case 1: sprintf(LOG_TEMP,"%s"," (默认上级)");	break;
+					case 2:  sprintf(LOG_TEMP,"%s"," (上级对等体)");	break;
+					case 3:  sprintf(LOG_TEMP,"%s"," (本域和邻域)");	break;
+					case 4:  sprintf(LOG_TEMP,"%s"," (仅本域)");	break;
+					default:  sprintf(LOG_TEMP,"%s"," (未知)");
 				}
                 RTE_LOG(DEBUG , L3FWD, "scope = %2X %s\n",control_register_hdr->scope,LOG_TEMP);
 
