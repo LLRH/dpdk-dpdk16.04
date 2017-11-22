@@ -35,7 +35,7 @@ typedef struct CoLoR_get
 
 /*control_type字段*/
 #define control_type_register 0
-#define control_tppe_announce 1
+#define control_tpye_announce 1
 
 #define NID_LENGTH 16
 struct control_public_header {

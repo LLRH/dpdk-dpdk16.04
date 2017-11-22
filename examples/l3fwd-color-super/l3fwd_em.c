@@ -908,7 +908,33 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 					case 0x3: sprintf(LOG_TEMP,"%s", " (video)");	break;
 				}
                 RTE_LOG(DEBUG , L3FWD, "content_classification = %2X %s",control_register_hdr->content_classification,LOG_TEMP);
-			}
+			}else if(control_public_hdr->control_type==control_tpye_announce){
+                //TODO:协商的具体方式有待商榷
+                uint64_t hz_timer = rte_get_timer_hz();
+                uint64_t cur_tsc1 = rte_rdtsc();
+
+                printf("\n\n");
+
+                static int len=0;
+                len=5;
+
+                double a[len];
+                double b[len];
+
+                for(i=0;i<len;i++){
+                    a[i]=mysrand(1,5);
+                    b[i]=mysrand(1,5);
+                    printf("[%d]%0.2f,%0.2f\n",i,a[i],b[i]);
+                }
+
+                int select=nash2(a,b,len);
+                printf("select=%d\n",select);
+
+                uint64_t cur_tsc2 = rte_rdtsc();
+                printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
+                printf("hz_timer=%ld\n",hz_timer);
+
+            }
 		
 		}
 		else if(ipv4_hdr->next_proto_id == TYPE_GET)
@@ -921,33 +947,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
 		}
 		
-		
-		uint64_t hz_timer = rte_get_timer_hz();
-		uint64_t cur_tsc1 = rte_rdtsc();
 
-		printf("\n\n");
-		
-		static int len=0;
-		len=5;
-		
-		double a[len];
-		double b[len];
-		
-		
-		for(i=0;i<len;i++){
-			a[i]=mysrand(1,5);
-			b[i]=mysrand(1,5);
-			printf("[%d]%0.2f,%0.2f\n",i,a[i],b[i]);
-		}
-		
-		int select=nash2(a,b,len);
-		printf("select=%d\n",select);
-		
-			
-		uint64_t cur_tsc2 = rte_rdtsc();
-		printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
-		printf("hz_timer=%ld\n",hz_timer);	
-		
 		//Return the original port;
 		
 		//printf("Return %d\n",portid);
