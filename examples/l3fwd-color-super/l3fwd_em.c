@@ -871,17 +871,17 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 }
 
                 arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
-                RTE_LOG(DEBUG , L3FWD, "\nnid_s = %s",LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "nid_s = %s\n",LOG_TEMP);
 
-                RTE_LOG(DEBUG , L3FWD, "scope = %2X",control_register_hdr->scope);
+                RTE_LOG(DEBUG , L3FWD, "scope = %2X\n",control_register_hdr->scope);
 				
 				switch(control_register_hdr->scope)
 				{
-					case 1: RTE_LOG(DEBUG , L3FWD, " (默认上级)");	break;
-					case 2: RTE_LOG(DEBUG , L3FWD, " (上级对等体)");	break;
-					case 3: RTE_LOG(DEBUG , L3FWD, " (本域和邻域)");	break;
-					case 4: RTE_LOG(DEBUG , L3FWD, " (仅本域)");	break;
-					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
+					case 1: RTE_LOG(DEBUG , "", " (默认上级)");	break;
+					case 2: RTE_LOG(DEBUG , "", " (上级对等体)");	break;
+					case 3: RTE_LOG(DEBUG , "", " (本域和邻域)");	break;
+					case 4: RTE_LOG(DEBUG , "", " (仅本域)");	break;
+					default: RTE_LOG(DEBUG , "", " (未知)");
 				}
 
                 RTE_LOG(DEBUG , L3FWD, "\ntime_of_validity = %d",control_register_hdr->time_of_validity);
@@ -890,14 +890,14 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 				
 				switch(control_register_hdr->time_unit)
 				{
-					case 1: RTE_LOG(DEBUG , L3FWD, " (秒)");	break;
-					case 2: RTE_LOG(DEBUG , L3FWD, " (分)");	break;
-					case 3: RTE_LOG(DEBUG , L3FWD, " (小时)");	break;
-					case 4: RTE_LOG(DEBUG , L3FWD, " (天)");	break;
-					case 5: RTE_LOG(DEBUG , L3FWD, " (星期)");	break;
-					case 6: RTE_LOG(DEBUG , L3FWD, " (月)");	break;
-					case 7: RTE_LOG(DEBUG , L3FWD, " (年)");	break;
-					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
+					case 1: RTE_LOG(DEBUG , "", " (秒)");	break;
+					case 2: RTE_LOG(DEBUG , "", " (分)");	break;
+					case 3: RTE_LOG(DEBUG , "", " (小时)");	break;
+					case 4: RTE_LOG(DEBUG , "", " (天)");	break;
+					case 5: RTE_LOG(DEBUG , "", " (星期)");	break;
+					case 6: RTE_LOG(DEBUG , "", " (月)");	break;
+					case 7: RTE_LOG(DEBUG , "", " (年)");	break;
+					default: RTE_LOG(DEBUG , "", " (未知)");
 				}
 
                 RTE_LOG(DEBUG , L3FWD, "\ncontent_size = %d bytes\n", control_register_hdr->content_size);
