@@ -827,7 +827,9 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	struct ipv4_hdr *ipv4_hdr;
 	
 	ipv4_hdr = rte_pktmbuf_mtod_offset(pkt, struct ipv4_hdr *,sizeof(struct ether_hdr));
-	
+
+    char LOG_TEMP[1024];
+
 	#if PRINT==PRINT_ON
 		int i=0;
         RTE_LOG(DEBUG , L3FWD, "proto_id=%2x\n",ipv4_hdr->next_proto_id);
@@ -841,17 +843,9 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 				control_register_t *control_register_hdr=(control_register_t *)(control_public_hdr+1);
                 RTE_LOG(DEBUG , L3FWD, "______REGISTER___INFORMATION__________\n");
 
-                RTE_LOG(DEBUG , L3FWD, "n_sid = ");
-				
-				for(i=0; i<NID_LENGTH; i++)
-				{
-					printf("%2X",control_register_hdr->n_sid[i]);
-					if(i!=NID_LENGTH-1){
-						printf(":");
-					}else{
-						printf("\n");
-					}
-				}
+
+                arrayToHexStr(&control_register_hdr->n_sid[i],NID_LENGTH,LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "n_sid = %s\n",LOG_TEMP);
 
                 RTE_LOG(DEBUG , L3FWD, "l_sid = ");
 				for(i=0; i<L_SID_LENGTH; i++)
