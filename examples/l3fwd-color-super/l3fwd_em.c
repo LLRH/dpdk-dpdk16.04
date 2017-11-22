@@ -832,6 +832,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
 	#if PRINT==PRINT_ON
 		int i=0;
+        RTE_LOG(DEBUG , L3FWD, "------------------------------------------------------------\n");
         RTE_LOG(DEBUG , L3FWD, "proto_id=%2x\n",ipv4_hdr->next_proto_id);
 		if(ipv4_hdr->next_proto_id == TYPE_CONTROL)
 		{	
@@ -842,7 +843,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 RTE_LOG(DEBUG , L3FWD, "[%s]control_type==%2x\n",__func__,control_public_hdr->control_type);
 				control_register_t *control_register_hdr=(control_register_t *)(control_public_hdr+1);
                 RTE_LOG(DEBUG , L3FWD, "______REGISTER___INFORMATION__________\n");
-
 
                 arrayToHexStr(&control_register_hdr->n_sid[i],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "n_sid = %s\n",LOG_TEMP);
@@ -884,8 +884,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
                 RTE_LOG(DEBUG , L3FWD, "time_of_validity = %d\n",control_register_hdr->time_of_validity);
 
-
-				
 				switch(control_register_hdr->time_unit)
 				{
 					case 1: sprintf(LOG_TEMP,"%s"," (秒)");	break;
@@ -907,7 +905,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 					case 0x2: sprintf(LOG_TEMP,"%s", " (image)");	break;
 					case 0x3: sprintf(LOG_TEMP,"%s", " (video)");	break;
 				}
-                RTE_LOG(DEBUG , L3FWD, "content_classification = %2X %s",control_register_hdr->content_classification,LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "content_classification = %2X %s\n",control_register_hdr->content_classification,LOG_TEMP);
 			}else if(control_public_hdr->control_type==control_tpye_announce){
                 //TODO:协商的具体方式有待商榷
                 uint64_t hz_timer = rte_get_timer_hz();
@@ -933,7 +931,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 uint64_t cur_tsc2 = rte_rdtsc();
                 printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
                 printf("hz_timer=%ld\n",hz_timer);
-
             }
 		
 		}
