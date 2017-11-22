@@ -886,7 +886,7 @@ mongoc_database_t    *database;
 mongoc_collection_t  *collection;
 
 char* DB_NAME_GLOBAL="CoLoR";
-char* COLL_NAME_GLOBAL="REGISTER_INFO";
+char* COLL_NAME_GLOBAL="REGISTER_INFO_2";
 
 
 int
