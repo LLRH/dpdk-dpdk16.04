@@ -837,11 +837,11 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 			
 			if(control_public_hdr->control_type== control_type_register)
 			{
-				printf("[%s]control_type==%2x\n",__func__,control_public_hdr->control_type);
+                RTE_LOG(DEBUG , L3FWD, "[%s]control_type==%2x\n",__func__,control_public_hdr->control_type);
 				control_register_t *control_register_hdr=(control_register_t *)(control_public_hdr+1);
-				printf("______REGISTER___INFORMATION__________\n");
-				
-				printf("n_sid = ");
+                RTE_LOG(DEBUG , L3FWD, "______REGISTER___INFORMATION__________\n");
+
+                RTE_LOG(DEBUG , L3FWD, "n_sid = ");
 				
 				for(i=0; i<NID_LENGTH; i++)
 				{
@@ -852,8 +852,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 						printf("\n");
 					}
 				}
-				
-				printf("l_sid = ");
+
+                RTE_LOG(DEBUG , L3FWD, "l_sid = ");
 				for(i=0; i<L_SID_LENGTH; i++)
 				{
 					printf("%2X",control_register_hdr->l_sid[i]);
@@ -863,28 +863,28 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 						printf("\n");
 					}
 				}
-				
-				printf("type = %2X",control_register_hdr->type);
+
+                RTE_LOG(DEBUG , L3FWD, "type = %2X",control_register_hdr->type);
 				
 				switch(control_register_hdr->type)
 				{
 					case REGISTER_TYPE_ADD:
-						printf(" (注册)");
+                        RTE_LOG(DEBUG , L3FWD, " (注册)");
 						insert_mongodb(control_register_hdr);
 						break;
 					case
 						REGISTER_TYPE_UPDATE:
 						update_mongodb(control_register_hdr);
-						printf(" (更新)");
+                        RTE_LOG(DEBUG , L3FWD, " (更新)");
 						break;
 					case REGISTER_TYPE_DELETE:
-						printf(" (删除)");
+                        RTE_LOG(DEBUG , L3FWD, " (删除)");
 						delete_mongodb(control_register_hdr);
 						break;
-					default: printf(" (未知)");
+					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
 				}
-				
-				printf("\nnid_s = ");
+
+                RTE_LOG(DEBUG , L3FWD, "\nnid_s = ");
 				for(i=0; i<NID_LENGTH; i++)
 				{
 					printf("%2X",control_register_hdr->nid_s[i]);
@@ -895,41 +895,41 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 					}
 				}
 
-				printf("scope = %2X",control_register_hdr->scope);
+                RTE_LOG(DEBUG , L3FWD, "scope = %2X",control_register_hdr->scope);
 				
 				switch(control_register_hdr->scope)
 				{
-					case 1: printf(" (默认上级)");	break;
-					case 2: printf(" (上级对等体)");	break;
-					case 3: printf(" (本域和邻域)");	break;
-					case 4: printf(" (仅本域)");	break;
-					default: printf(" (未知)");
+					case 1: RTE_LOG(DEBUG , L3FWD, " (默认上级)");	break;
+					case 2: RTE_LOG(DEBUG , L3FWD, " (上级对等体)");	break;
+					case 3: RTE_LOG(DEBUG , L3FWD, " (本域和邻域)");	break;
+					case 4: RTE_LOG(DEBUG , L3FWD, " (仅本域)");	break;
+					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
 				}
-				
-				printf("\ntime_of_validity = %d",control_register_hdr->time_of_validity);
-				
-				printf("\ntime_unit = %2X",control_register_hdr->time_unit);
+
+                RTE_LOG(DEBUG , L3FWD, "\ntime_of_validity = %d",control_register_hdr->time_of_validity);
+
+                RTE_LOG(DEBUG , L3FWD, "\ntime_unit = %2X",control_register_hdr->time_unit);
 				
 				switch(control_register_hdr->time_unit)
 				{
-					case 1: printf(" (秒)");	break;
-					case 2: printf(" (分)");	break;
-					case 3: printf(" (小时)");	break;
-					case 4: printf(" (天)");	break;
-					case 5: printf(" (星期)");	break;
-					case 6: printf(" (月)");	break;
-					case 7: printf(" (年)");	break;
-					default: printf(" (未知)");
+					case 1: RTE_LOG(DEBUG , L3FWD, " (秒)");	break;
+					case 2: RTE_LOG(DEBUG , L3FWD, " (分)");	break;
+					case 3: RTE_LOG(DEBUG , L3FWD, " (小时)");	break;
+					case 4: RTE_LOG(DEBUG , L3FWD, " (天)");	break;
+					case 5: RTE_LOG(DEBUG , L3FWD, " (星期)");	break;
+					case 6: RTE_LOG(DEBUG , L3FWD, " (月)");	break;
+					case 7: RTE_LOG(DEBUG , L3FWD, " (年)");	break;
+					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
 				}
-				
-				printf("\ncontent_size = %d bytes\n", control_register_hdr->content_size);
-				
-				printf("content_classification = %2X",control_register_hdr->content_classification);
+
+                RTE_LOG(DEBUG , L3FWD, "\ncontent_size = %d bytes\n", control_register_hdr->content_size);
+
+                RTE_LOG(DEBUG , L3FWD, "content_classification = %2X",control_register_hdr->content_classification);
 				switch(control_register_hdr->content_classification)
 				{
-					case 0x1: printf(" (txt)");		break;
-					case 0x2: printf(" (image)");	break;
-					case 0x3: printf(" (video)");	break;
+					case 0x1: RTE_LOG(DEBUG , L3FWD, " (txt)");		break;
+					case 0x2: RTE_LOG(DEBUG , L3FWD, " (image)");	break;
+					case 0x3: RTE_LOG(DEBUG , L3FWD, " (video)");	break;
 				}
 			}
 		
