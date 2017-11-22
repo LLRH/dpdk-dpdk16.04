@@ -850,25 +850,24 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
-                RTE_LOG(DEBUG , L3FWD, "type = %2X",control_register_hdr->type);
-
                 switch(control_register_hdr->type)
 				{
                     case REGISTER_TYPE_ADD:
-                        RTE_LOG(DEBUG , L3FWD, " (注册)");
+                        sprintf(LOG_TEMP,"%s"," (注册)");
                         insert_mongodb(control_register_hdr);
                         break;
                     case
 						REGISTER_TYPE_UPDATE:
                         update_mongodb(control_register_hdr);
-                        RTE_LOG(DEBUG , L3FWD, " (更新)");
+                        sprintf(LOG_TEMP,"%s", " (更新)");
                         break;
                     case REGISTER_TYPE_DELETE:
-                        RTE_LOG(DEBUG , L3FWD, " (删除)");
+                        sprintf(LOG_TEMP,"%s", " (删除)");
                         delete_mongodb(control_register_hdr);
                         break;
-                    default: RTE_LOG(DEBUG , L3FWD, " (未知)");
+                    default:  sprintf(LOG_TEMP,"%s", " (未知)");
                 }
+                RTE_LOG(DEBUG , L3FWD, "type = %2X %s\n",control_register_hdr->type,LOG_TEMP);
 
                 arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "nid_s = %s\n",LOG_TEMP);
@@ -883,31 +882,32 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 				}
                 RTE_LOG(DEBUG , L3FWD, "scope = %2X %s\n",control_register_hdr->scope,LOG_TEMP);
 
-                RTE_LOG(DEBUG , L3FWD, "\ntime_of_validity = %d",control_register_hdr->time_of_validity);
+                RTE_LOG(DEBUG , L3FWD, "time_of_validity = %d\n",control_register_hdr->time_of_validity);
 
-                RTE_LOG(DEBUG , L3FWD, "\ntime_unit = %2X",control_register_hdr->time_unit);
+
 				
 				switch(control_register_hdr->time_unit)
 				{
-					case 1: RTE_LOG(DEBUG , L3FWD, " (秒)");	break;
-					case 2: RTE_LOG(DEBUG , L3FWD, " (分)");	break;
-					case 3: RTE_LOG(DEBUG , L3FWD, " (小时)");	break;
-					case 4: RTE_LOG(DEBUG , L3FWD, " (天)");	break;
-					case 5: RTE_LOG(DEBUG , L3FWD, " (星期)");	break;
-					case 6: RTE_LOG(DEBUG , L3FWD, " (月)");	break;
-					case 7: RTE_LOG(DEBUG , L3FWD, " (年)");	break;
-					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
+					case 1: sprintf(LOG_TEMP,"%s"," (秒)");	break;
+					case 2: sprintf(LOG_TEMP,"%s", " (分)");	break;
+					case 3: sprintf(LOG_TEMP,"%s", " (小时)");	break;
+					case 4: sprintf(LOG_TEMP,"%s", " (天)");	break;
+					case 5: sprintf(LOG_TEMP,"%s", " (星期)");	break;
+					case 6: sprintf(LOG_TEMP,"%s", " (月)");	break;
+					case 7: sprintf(LOG_TEMP,"%s", " (年)");	break;
+					default: sprintf(LOG_TEMP,"%s", " (未知)");
 				}
+                RTE_LOG(DEBUG , L3FWD, "time_unit = %2X %s\n",control_register_hdr->time_unit,LOG_TEMP);
 
-                RTE_LOG(DEBUG , L3FWD, "\ncontent_size = %d bytes\n", control_register_hdr->content_size);
+                RTE_LOG(DEBUG , L3FWD, "content_size = %d bytes\n", control_register_hdr->content_size);
 
-                RTE_LOG(DEBUG , L3FWD, "content_classification = %2X",control_register_hdr->content_classification);
 				switch(control_register_hdr->content_classification)
 				{
-					case 0x1: RTE_LOG(DEBUG , L3FWD, " (txt)");		break;
-					case 0x2: RTE_LOG(DEBUG , L3FWD, " (image)");	break;
-					case 0x3: RTE_LOG(DEBUG , L3FWD, " (video)");	break;
+					case 0x1: sprintf(LOG_TEMP,"%s", " (txt)");		break;
+					case 0x2: sprintf(LOG_TEMP,"%s", " (image)");	break;
+					case 0x3: sprintf(LOG_TEMP,"%s", " (video)");	break;
 				}
+                RTE_LOG(DEBUG , L3FWD, "content_classification = %2X %s",control_register_hdr->content_classification,LOG_TEMP);
 			}
 		
 		}
