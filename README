@@ -9,3 +9,17 @@ API documentation, and sample application information.
 
 For questions and usage discussions, subscribe to: users@dpdk.org
 Report bugs and issues to the development mailing list: dev@dpdk.org
+
+#:<<mongodb
+ps -fe|grep "mongod" |grep -v grep
+if [ $? -ne 0 ]
+then
+	echo "start mongoDB....."
+	mongod --dbpath /media/root/000704A80000DFDE/wenxingbeng/data/db --logpath /media/root/000704A80000DFDE/wenxingbeng/mongodb.log --logappend &
+else
+	echo "mongoDB is runing....."
+fi
+#mongodb
+
+
+ db.REGISTER_INFO.ensureIndex({"l_sid":1},{"unique":true})

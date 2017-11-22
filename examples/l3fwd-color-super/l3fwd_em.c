@@ -649,21 +649,21 @@ bool Json_get_by_field(char *json_str, char *field_str, char *value_str) {
     value_str[0] = '\0';
     return result;
 }
-
+//TODO:把数组变成16进制的字符串
 void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
-	str[0]='\0';
-	char temp[10];
-	int i=0;
+    str[0]='\0';
+    char temp[10];
+    int i=0;
     //TODO:代表16进制，可读性强
     strcat(str,"0x");
-	for(i=0;i<len;i++)
-	{
-		//str[i]=start[i];
-		temp[0]='\0';
-		sprintf(temp,"%2X",start[i]);
-		if(temp[0]==' ') temp[0]='0';
-		strcat(str,temp);
-	}
+    for(i=0;i<len;i++)
+    {
+        //str[i]=start[i];
+        temp[0]='\0';
+        sprintf(temp,"%2X",start[i]);
+        if(temp[0]==' ') temp[0]='0';
+        strcat(str,temp);
+    }
 }
 
 //TODO:转换的时候需要对应的字段名字
