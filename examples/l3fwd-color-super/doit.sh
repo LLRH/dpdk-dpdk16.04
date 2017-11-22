@@ -1,4 +1,13 @@
- ./build/l3fwd -c 0x7 -n 2 --log-level 8 -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
+#!/bin/sh
+logLevel=8;
+if [ ! -n "$1" ] ;then
+    echo "The default logLvel is 8(DEBUG)."
+else
+    echo "The logLevel is $1 now."
+    logLevel=$1
+fi
+sleep 1s
+./build/l3fwd -c 0x7 -n 2 --log-level $logLevel  -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
 
 
 
