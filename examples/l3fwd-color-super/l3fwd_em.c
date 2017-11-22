@@ -847,47 +847,31 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 arrayToHexStr(&control_register_hdr->n_sid[i],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "n_sid = %s\n",LOG_TEMP);
 
-                RTE_LOG(DEBUG , L3FWD, "l_sid = ");
-				for(i=0; i<L_SID_LENGTH; i++)
-				{
-					printf("%2X",control_register_hdr->l_sid[i]);
-					if(i!=L_SID_LENGTH-1){
-						printf(":");
-					}else{
-						printf("\n");
-					}
-				}
+                arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
                 RTE_LOG(DEBUG , L3FWD, "type = %2X",control_register_hdr->type);
-				
-				switch(control_register_hdr->type)
-				{
-					case REGISTER_TYPE_ADD:
-                        RTE_LOG(DEBUG , L3FWD, " (注册)");
-						insert_mongodb(control_register_hdr);
-						break;
-					case
-						REGISTER_TYPE_UPDATE:
-						update_mongodb(control_register_hdr);
-                        RTE_LOG(DEBUG , L3FWD, " (更新)");
-						break;
-					case REGISTER_TYPE_DELETE:
-                        RTE_LOG(DEBUG , L3FWD, " (删除)");
-						delete_mongodb(control_register_hdr);
-						break;
-					default: RTE_LOG(DEBUG , L3FWD, " (未知)");
-				}
 
-                RTE_LOG(DEBUG , L3FWD, "\nnid_s = ");
-				for(i=0; i<NID_LENGTH; i++)
+                switch(control_register_hdr->type)
 				{
-					printf("%2X",control_register_hdr->nid_s[i]);
-					if(i!=NID_LENGTH-1){
-						printf(":");
-					}else{
-						printf("\n");
-					}
-				}
+                    case REGISTER_TYPE_ADD:
+                        RTE_LOG(DEBUG , L3FWD, " (注册)");
+                        insert_mongodb(control_register_hdr);
+                        break;
+                    case
+						REGISTER_TYPE_UPDATE:
+                        update_mongodb(control_register_hdr);
+                        RTE_LOG(DEBUG , L3FWD, " (更新)");
+                        break;
+                    case REGISTER_TYPE_DELETE:
+                        RTE_LOG(DEBUG , L3FWD, " (删除)");
+                        delete_mongodb(control_register_hdr);
+                        break;
+                    default: RTE_LOG(DEBUG , L3FWD, " (未知)");
+                }
+
+                arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "\nnid_s = %s",LOG_TEMP);
 
                 RTE_LOG(DEBUG , L3FWD, "scope = %2X",control_register_hdr->scope);
 				
