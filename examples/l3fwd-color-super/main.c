@@ -891,9 +891,9 @@ mongoc_collection_t  *collections[NUM_CONN];
 
 //TODO:创建一个连接！
 void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL,
-									mongoc_client_t      *client,
-									mongoc_database_t    *database,
-									mongoc_collection_t  *collection){
+									mongoc_client_t      **client,
+									mongoc_database_t    **database,
+									mongoc_collection_t  **collection){
 
 	//TODO:初始化MongoDB
 	bson_t	*command, 	  reply;
@@ -901,12 +901,12 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 	bool                  retval;
 
 	mongoc_init ();
-	client = mongoc_client_new ("mongodb://localhost:27017");
-	mongoc_client_set_appname (client, "[dpdk-RM]");
-	database = mongoc_client_get_database (client, DB_NAME_GLOBAL);
-	collection = mongoc_client_get_collection (client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
+	(*client) = mongoc_client_new ("mongodb://localhost:27017");
+	mongoc_client_set_appname (*client, "[dpdk-RM]");
+	*database = mongoc_client_get_database (*client, DB_NAME_GLOBAL);
+	*collection = mongoc_client_get_collection (*client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
 	command = BCON_NEW ("ping", BCON_INT32 (1));
-	retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
+	retval = mongoc_client_command_simple (*client, "admin", command, NULL, &reply, &error);
 	if (!retval) {
 		fprintf (stderr, "%s\n", error.message);
 		rte_exit(EXIT_FAILURE, "Init mongoDB Failded\n");
@@ -942,7 +942,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 							   "]");
 
 	r = mongoc_database_write_command_with_opts (
-			database, create_indexes, NULL /* opts */, &reply, &error);
+			*database, create_indexes, NULL /* opts */, &reply, &error);
 
 	reply_str = bson_as_json (&reply, NULL);
 	printf ("%s\n", reply_str);
@@ -1106,8 +1106,8 @@ main(int argc, char **argv)
 
 	char* DB_NAME_GLOBAL="CoLoR";
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
-	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,client,database,collection);
-	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,clients[0],databases[0],collections[0]);
+	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&client,&database,&collection);
+	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&clients[0],&databases[0],&collections[0]);
 
 
 
