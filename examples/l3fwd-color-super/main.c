@@ -1064,6 +1064,7 @@ main(int argc, char **argv)
 	char * index_name;
 	bsont_t * create_indexes;
 	bool r;
+	char * reply_str;
 
 	bson_init (&keys);
 	BSON_APPEND_INT32 (&keys, "l_sid", 1);
