@@ -1062,7 +1062,7 @@ main(int argc, char **argv)
 
 	bson_t keys;
 	char * index_name;
-	bsont_t * create_indexes;
+	bson_t * create_indexes;
 	bool r;
 	char * reply_str;
 
