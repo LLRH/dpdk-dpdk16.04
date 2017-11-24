@@ -1060,7 +1060,11 @@ main(int argc, char **argv)
 /* ascending index on field "x" */
 
 
-	bson_t key;
+	bson_t keys;
+	char * index_name;
+	bsont_t * create_indexes;
+	bool r;
+
 	bson_init (&keys);
 	BSON_APPEND_INT32 (&keys, "l_sid", 1);
 	index_name = mongoc_collection_keys_to_index_string (&keys);
@@ -1075,7 +1079,7 @@ main(int argc, char **argv)
 							   "]");
 
 	r = mongoc_database_write_command_with_opts (
-			db, create_indexes, NULL /* opts */, &reply, &error);
+			database, create_indexes, NULL /* opts */, &reply, &error);
 
 	reply_str = bson_as_json (&reply, NULL);
 	printf ("%s\n", reply_str);
