@@ -1111,7 +1111,9 @@ main(int argc, char **argv)
 	//TODO:初始化每一个连接
 	int i;
 	for(i=0;i<NUM_CONN;i++){
-		create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&clients[i],&databases[i],&collections[i]);
+		char COLL_NAME[256];
+		sprintf(COLL_NAME,"%s_%d",COLL_NAME_GLOBAL,i);
+		create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME,&clients[i],&databases[i],&collections[i]);
 	}
 
 
@@ -1219,9 +1221,9 @@ main(int argc, char **argv)
 	mongoc_client_destroy (client);
 
 	for(i=0;i<NUM_CONN;i++){
-		mongoc_collection_destroy (collection);
-		mongoc_database_destroy (database);
-		mongoc_client_destroy (client);
+		mongoc_collection_destroy (collection[i]);
+		mongoc_database_destroy (database[i]);
+		mongoc_client_destroy (client[i]);
 	}
 	mongoc_cleanup ();
 
