@@ -884,6 +884,10 @@ lcore_mainloop(__attribute__((unused)) void *arg)
 mongoc_client_t      *client;
 mongoc_database_t    *database;
 mongoc_collection_t  *collection;
+//TODO:定义
+mongoc_client_t      *client[NUM_CONN];
+mongoc_database_t    *database[NUM_CONN];
+mongoc_collection_t  *collection[NUM_CONN];
 
 //TODO:创建一个连接！
 void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL,
@@ -892,7 +896,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 									mongoc_collection_t  *collection){
 
 	//TODO:初始化MongoDB
-	bson_t	*command, reply;
+	bson_t	*command, 	  reply;
 	bson_error_t          error;
 	bool                  retval;
 
