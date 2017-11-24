@@ -1221,9 +1221,9 @@ main(int argc, char **argv)
 	mongoc_client_destroy (client);
 
 	for(i=0;i<NUM_CONN;i++){
-		mongoc_collection_destroy (collection[i]);
-		mongoc_database_destroy (database[i]);
-		mongoc_client_destroy (client[i]);
+		mongoc_collection_destroy (collections[i]);
+		mongoc_database_destroy (databases[i]);
+		mongoc_client_destroy (clients[i]);
 	}
 	mongoc_cleanup ();
 
