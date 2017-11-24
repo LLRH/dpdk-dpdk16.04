@@ -1101,8 +1101,10 @@ main(int argc, char **argv)
 	printf("[From %s]Master core %u\n!",__func__, rte_lcore_id());
 
 	char* DB_NAME_GLOBAL="CoLoR";
-	char* COLL_NAME_GLOBAL="REGISTER_INFO_2";
+	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,client,database,collection);
+	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,clients[0],databases[0],collections[0g]);
+
 
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
