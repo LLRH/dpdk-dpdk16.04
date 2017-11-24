@@ -255,10 +255,12 @@ lpm_get_ipv6_l3fwd_lookup_struct(const int socketid);
 
 extern mongoc_client_t      *client;
 extern mongoc_database_t    *database;
-extern  mongoc_collection_t  *collection;
+extern mongoc_collection_t  *collection;
 
-//TODO:MongoDB数据中对应的 数据和集合名称
-extern char* DB_NAME_GLOBAL;
-extern char* COLL_NAME_GLOBAL;
+//定义连接的个数
+#define NUM_CONN 4
+extern mongoc_client_t      *clients[NUM_CONN];
+extern mongoc_database_t    *databases[NUM_CONN];
+extern mongoc_collection_t  *collections[NUM_CONN];
 
 #endif  /* __L3_FWD_H__ */

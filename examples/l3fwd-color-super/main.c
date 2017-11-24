@@ -886,7 +886,10 @@ mongoc_database_t    *database;
 mongoc_collection_t  *collection;
 
 //TODO:创建一个连接！
-void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL){
+void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL,
+									mongoc_client_t      *client,
+									mongoc_database_t    *database,
+									mongoc_collection_t  *collection){
 
 	//TODO:初始化MongoDB
 	bson_t	*command, reply;
@@ -1099,7 +1102,7 @@ main(int argc, char **argv)
 
 	char* DB_NAME_GLOBAL="CoLoR";
 	char* COLL_NAME_GLOBAL="REGISTER_INFO_2";
-	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL);
+	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,client,database,collection);
 
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
