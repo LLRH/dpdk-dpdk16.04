@@ -1103,7 +1103,7 @@ main(int argc, char **argv)
 	char* DB_NAME_GLOBAL="CoLoR";
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,client,database,collection);
-	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,clients[0],databases[0],collections[0g]);
+	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,clients[0],databases[0],collections[0]);
 
 
 
