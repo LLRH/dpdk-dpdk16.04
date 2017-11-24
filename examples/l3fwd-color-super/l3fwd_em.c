@@ -683,6 +683,14 @@ const char* _DEAD_TIME ="_dead_time";
 int
 insert_mongodb (control_register_t *control_register_hdr)
 {
+
+    mongoc_collection_t  *collection_local;
+    collection_local=collection;
+    if(NUM_CONN > 0){
+        //TODO：根据L_SID的最后一位求余数 判断
+        collection_local=collections[control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
+    }
+
    bson_t               *insert;
    bson_error_t          error;
 
@@ -735,7 +743,7 @@ insert_mongodb (control_register_t *control_register_hdr)
         _DEAD_TIME,_dead_time
    	);
 
-   if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, insert, NULL, &error)) {
+   if (!mongoc_collection_insert (collection_local, MONGOC_INSERT_NONE, insert, NULL, &error)) {
       fprintf (stderr, "%s\n", error.message);
    }
 
@@ -745,6 +753,14 @@ insert_mongodb (control_register_t *control_register_hdr)
 
 int find_mongodb (CoLoR_get_t *get_hdr)
 {
+
+    mongoc_collection_t  *collection_local;
+    collection_local=collection;
+    if(NUM_CONN > 0){
+        //TODO：根据L_SID的最后一位求余数 判断
+        collection_local=collections[get_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
+    }
+
     bson_t               *query;
     bson_error_t         error;
     char                 *str;
@@ -757,7 +773,7 @@ int find_mongodb (CoLoR_get_t *get_hdr)
    		L_SID, l_sid
    	);
    	
-    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection, query, NULL, NULL);
+    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
     const bson_t * doc;
 	while (mongoc_cursor_next (cursor, &doc)) 
 	{
@@ -780,6 +796,14 @@ int find_mongodb (CoLoR_get_t *get_hdr)
 //TODO:删除mongoDB数据库的内容
 int delete_mongodb (control_register_t *control_register_hdr)
 {
+
+    mongoc_collection_t  *collection_local;
+    collection_local=collection;
+    if(NUM_CONN > 0){
+        //TODO：根据L_SID的最后一位求余数 判断
+        collection_local=collections[control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
+    }
+
     bson_t              * query;
     bson_error_t        error;
     char                *str;
@@ -792,7 +816,7 @@ int delete_mongodb (control_register_t *control_register_hdr)
             L_SID, l_sid
     );
 
-    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection, query, NULL, NULL);
+    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
     const bson_t * doc;
     while (mongoc_cursor_next (cursor, &doc))
     {
@@ -803,7 +827,7 @@ int delete_mongodb (control_register_t *control_register_hdr)
 
 	//TODO:删除
 	if (!mongoc_collection_remove (
-			collection, MONGOC_REMOVE_SINGLE_REMOVE, query, NULL, &error)) {
+			collection_local, MONGOC_REMOVE_SINGLE_REMOVE, query, NULL, &error)) {
 		fprintf (stderr, "Delete failed: %s\n", error.message);
 	}
 
