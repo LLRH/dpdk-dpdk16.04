@@ -1107,7 +1107,12 @@ main(int argc, char **argv)
 	char* DB_NAME_GLOBAL="CoLoR";
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&client,&database,&collection);
-	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&clients[0],&databases[0],&collections[0]);
+
+	//TODO:初始化每一个连接
+	int i;
+	for(i=0;i<NUM_CONN;i++){
+		create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&clients[i],&databases[i],&collections[i]);
+	}
 
 
 
@@ -1207,11 +1212,19 @@ main(int argc, char **argv)
 	}
 
 
-	//TODO:清楚mongoDB的连接
+	//TODO:清除mongoDB的连接
+
 	mongoc_collection_destroy (collection);
 	mongoc_database_destroy (database);
 	mongoc_client_destroy (client);
+
+	for(i=0;i<NUM_CONN;i++){
+		mongoc_collection_destroy (collection);
+		mongoc_database_destroy (database);
+		mongoc_client_destroy (client);
+	}
 	mongoc_cleanup ();
+
 
 	/* stop ports */
 	for (portid = 0; portid < nb_ports; portid++) {
