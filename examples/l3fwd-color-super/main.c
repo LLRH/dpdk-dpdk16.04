@@ -1076,6 +1076,7 @@ main(int argc, char **argv)
 							     "{",
 							        "key", BCON_DOCUMENT (&keys),
 							        "name", BCON_UTF8 (index_name),
+							   		"unique",BCON_BOOL("true"),
 							      "}",
 							   "]");
 
@@ -1084,6 +1085,11 @@ main(int argc, char **argv)
 
 	reply_str = bson_as_json (&reply, NULL);
 	printf ("%s\n", reply_str);
+
+	bson_destroy (create_indexes);
+	bson_free (index_name);
+	bson_free (reply_str);
+
 
 	if (!r) {
 		fprintf (stderr, "Error in createIndexes: %s\n", error.message);
