@@ -888,6 +888,71 @@ mongoc_collection_t  *collection;
 char* DB_NAME_GLOBAL="CoLoR";
 char* COLL_NAME_GLOBAL="REGISTER_INFO_2";
 
+//TODO:创建一个连接！
+void create_a_collection_connection(){
+
+	//TODO:初始化MongoDB
+	bson_t	*command, reply;
+	bson_error_t          error;
+	bool                  retval;
+
+	mongoc_init ();
+	client = mongoc_client_new ("mongodb://localhost:27017");
+	mongoc_client_set_appname (client, "[dpdk-RM]");
+	database = mongoc_client_get_database (client, DB_NAME_GLOBAL);
+	collection = mongoc_client_get_collection (client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
+	command = BCON_NEW ("ping", BCON_INT32 (1));
+	retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
+	if (!retval) {
+		fprintf (stderr, "%s\n", error.message);
+		return EXIT_FAILURE;
+	}
+
+	char *str = bson_as_json (&reply, NULL);
+	DBG_wxb("mongoDB connet test %s\n",str);
+
+	bson_destroy (command);
+	bson_free (str);
+
+	//TODO:准备插入 唯一索引的功能！
+/* ascending index on field "x" */
+
+	bson_t keys;
+	char * index_name;
+	bson_t * create_indexes;
+	bool r;
+	char * reply_str;
+
+	bson_init (&keys);
+	BSON_APPEND_INT32 (&keys, "l_sid", 1);
+	index_name = mongoc_collection_keys_to_index_string (&keys);
+	create_indexes = BCON_NEW ("createIndexes",
+							   BCON_UTF8 (COLL_NAME_GLOBAL),
+							   "indexes",
+							   "[",
+							   "{",
+							   "key", BCON_DOCUMENT (&keys),
+							   "name", BCON_UTF8 (index_name),
+							   "unique",BCON_BOOL("true"),
+							   "}",
+							   "]");
+
+	r = mongoc_database_write_command_with_opts (
+			database, create_indexes, NULL /* opts */, &reply, &error);
+
+	reply_str = bson_as_json (&reply, NULL);
+	printf ("%s\n", reply_str);
+
+	bson_destroy (create_indexes);
+	bson_free (index_name);
+	bson_free (reply_str);
+
+	if (!r) {
+		fprintf (stderr, "Error in createIndexes: %s\n", error.message);
+	}
+
+}
+
 
 int
 main(int argc, char **argv)
@@ -1036,68 +1101,8 @@ main(int argc, char **argv)
 	printf("[From %s]Master core %u\n!",__func__, rte_lcore_id());
 
 
-    //TODO:初始化MongoDB
-	bson_t	*command, reply;
-	bson_error_t          error;
-	bool                  retval;
+	create_a_collection_connection();
 
-    mongoc_init ();
-    client = mongoc_client_new ("mongodb://localhost:27017");
-    mongoc_client_set_appname (client, "[dpdk-RM]");
-    database = mongoc_client_get_database (client, DB_NAME_GLOBAL);
-    collection = mongoc_client_get_collection (client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
-    command = BCON_NEW ("ping", BCON_INT32 (1));
-    retval = mongoc_client_command_simple (client, "admin", command, NULL, &reply, &error);
-    if (!retval) {
-        fprintf (stderr, "%s\n", error.message);
-        return EXIT_FAILURE;
-    }
-
-	char *str = bson_as_json (&reply, NULL);
-	DBG_wxb("mongoDB connet test %s\n",str);
-
-	//TODO:准备插入 唯一索引的功能！
-/* ascending index on field "x" */
-
-
-	bson_t keys;
-	char * index_name;
-	bson_t * create_indexes;
-	bool r;
-	char * reply_str;
-
-	bson_init (&keys);
-	BSON_APPEND_INT32 (&keys, "l_sid", 1);
-	index_name = mongoc_collection_keys_to_index_string (&keys);
-	create_indexes = BCON_NEW ("createIndexes",
-							   BCON_UTF8 (COLL_NAME_GLOBAL),
-							   "indexes",
-							   "[",
-							     "{",
-							        "key", BCON_DOCUMENT (&keys),
-							        "name", BCON_UTF8 (index_name),
-							   		"unique",BCON_BOOL("true"),
-							      "}",
-							   "]");
-
-	r = mongoc_database_write_command_with_opts (
-			database, create_indexes, NULL /* opts */, &reply, &error);
-
-	reply_str = bson_as_json (&reply, NULL);
-	printf ("%s\n", reply_str);
-
-	bson_destroy (create_indexes);
-	bson_free (index_name);
-	bson_free (reply_str);
-
-
-	if (!r) {
-		fprintf (stderr, "Error in createIndexes: %s\n", error.message);
-	}
-
-
-	bson_destroy (command);
-	bson_free (str);
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)
