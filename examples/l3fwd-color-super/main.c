@@ -1043,7 +1043,7 @@ main(int argc, char **argv)
 
     mongoc_init ();
     client = mongoc_client_new ("mongodb://localhost:27017");
-    mongoc_client_set_appname (client, "connect-example");
+    mongoc_client_set_appname (client, "[dpdk-RM]");
     database = mongoc_client_get_database (client, DB_NAME_GLOBAL);
     collection = mongoc_client_get_collection (client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
     command = BCON_NEW ("ping", BCON_INT32 (1));
@@ -1055,6 +1055,35 @@ main(int argc, char **argv)
 
 	char *str = bson_as_json (&reply, NULL);
 	DBG_wxb("mongoDB connet test %s\n",str);
+
+	//TODO:准备插入 唯一索引的功能！
+/* ascending index on field "x" */
+
+
+	bson_t key;
+	bson_init (&keys);
+	BSON_APPEND_INT32 (&keys, "l_sid", 1);
+	index_name = mongoc_collection_keys_to_index_string (&keys);
+	create_indexes = BCON_NEW ("createIndexes",
+							   BCON_UTF8 (COLL_NAME_GLOBAL),
+							   "indexes",
+							   "[",
+							     "{",
+							        "key", BCON_DOCUMENT (&keys),
+							        "name", BCON_UTF8 (index_name),
+							      "}",
+							   "]");
+
+	r = mongoc_database_write_command_with_opts (
+			db, create_indexes, NULL /* opts */, &reply, &error);
+
+	reply_str = bson_as_json (&reply, NULL);
+	printf ("%s\n", reply_str);
+
+	if (!r) {
+		fprintf (stderr, "Error in createIndexes: %s\n", error.message);
+	}
+
 
 	bson_destroy (command);
 	bson_free (str);
