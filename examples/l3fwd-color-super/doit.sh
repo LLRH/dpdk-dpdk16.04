@@ -7,6 +7,8 @@ else
     logLevel=$1
 fi
 sleep 1s
+
+echo "" > dpdk.log
 ./build/l3fwd -c 0x7 -n 2 --log-level $logLevel  -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
 
 
