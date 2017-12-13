@@ -966,7 +966,7 @@ pthread_cond_t buffCond[NUM_CONN];
 void * thread_mongoDB_fun(void *arg){
 
     int i=*((int *)arg);
-    printf("[From %s] <i=%d>\n");
+    printf("[From %s] <i=%d>\n",__func__,i);
 
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
