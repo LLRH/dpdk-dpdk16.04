@@ -681,15 +681,8 @@ const char* _DEAD_TIME ="_dead_time";
 #define MAX_CONVERT_LEN  256
 
 int
-insert_mongodb (control_register_t *control_register_hdr)
+insert_mongodb (control_register_t *control_register_hdr, mongoc_collection_t  *collection_local)
 {
-    mongoc_collection_t  *collection_local;
-    collection_local=collection;
-    if(NUM_CONN > 0){
-        //TODO：根据L_SID的最后一位求余数 判断
-        collection_local=collections[control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
-    }
-
    bson_t               *insert;
    bson_error_t          error;
 
@@ -793,16 +786,8 @@ int find_mongodb (CoLoR_get_t *get_hdr)
 }
 
 //TODO:删除mongoDB数据库的内容
-int delete_mongodb (control_register_t *control_register_hdr)
+int delete_mongodb (control_register_t *control_register_hdr, mongoc_collection_t  *collection_local)
 {
-
-    mongoc_collection_t  *collection_local;
-    collection_local=collection;
-    if(NUM_CONN > 0){
-        //TODO：根据L_SID的最后一位求余数 判断
-        collection_local=collections[control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
-    }
-
     bson_t              * query;
     bson_error_t        error;
     char                *str;
@@ -835,30 +820,38 @@ int delete_mongodb (control_register_t *control_register_hdr)
 }
 
 //TODO:更新mongoDB数据库的内容  ---》先删除，再添加！
-int update_mongodb (control_register_t *control_register_hdr)
+int update_mongodb (control_register_t *control_register_hdr, ongoc_collection_t  *collection_local)
 {
-	delete_mongodb(control_register_hdr);
-	insert_mongodb(control_register_hdr);
+	delete_mongodb(control_register_hdr,collection_local);
+	insert_mongodb(control_register_hdr,collection_local);
     return 0;
 }
 
 static inline __attribute__((always_inline)) void
 process_register(control_register_t *control_register_hdr){
+
+    mongoc_collection_t  *collection_local;
+    collection_local=collection;
+    if(NUM_CONN > 0){
+        //TODO：根据L_SID的最后一位求余数 判断
+        collection_local=collections[control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
+    }
+
     char LOG_TEMP[1024];
     switch(control_register_hdr->type)
     {
         case REGISTER_TYPE_ADD:
             sprintf(LOG_TEMP,"%s"," (注册)");
-            insert_mongodb(control_register_hdr);
+            insert_mongodb(control_register_hdr,collection_local);
             break;
         case
             REGISTER_TYPE_UPDATE:
-            update_mongodb(control_register_hdr);
+            update_mongodb(control_register_hdr,collection_local);
             sprintf(LOG_TEMP,"%s", " (更新)");
             break;
         case REGISTER_TYPE_DELETE:
             sprintf(LOG_TEMP,"%s", " (删除)");
-            delete_mongodb(control_register_hdr);
+            delete_mongodb(control_register_hdr,collection_local);
             break;
         default:  sprintf(LOG_TEMP,"%s", " (未知)");
     }
