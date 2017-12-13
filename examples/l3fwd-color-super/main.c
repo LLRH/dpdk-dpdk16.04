@@ -965,8 +965,8 @@ pthread_cond_t buffCond[NUM_CONN];
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
 
-    int i=*((int *)arg);
-    printf("[From %s] <i=%d>\n",__func__,i);
+    int select=*((int *)arg);
+    printf("[From %s] <i=%d>\n",__func__,select);
 
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
@@ -982,16 +982,16 @@ void * thread_mongoDB_fun(void *arg){
     fflush(stdout);
     while(1){
         //TODO?这里要消费请求包里面的SID
-        pthread_mutex_lock(&buffLock[i]);
-        while(isFull[i] == false)
+        pthread_mutex_lock(&buffLock[select]);
+        while(isFull[select] == false)
         {
             printf("[%s]waiting for buff!\n",__func__);
-            pthread_cond_wait(&buffCond[i],&buffLock[i]);
+            pthread_cond_wait(&buffCond[select],&buffLock[select]);
         }
         printf("connet the mongoDB\n");
-        process_register(&registerBuff[i]);
-        isFull[i] = false;
-        pthread_mutex_unlock(&buffLock[i]);
+        process_register(&registerBuff[select]);
+        isFull[select] = false;
+        pthread_mutex_unlock(&buffLock[select]);
     }
 
     printf("[From %s]I am a new thread\n",__func__);
@@ -1151,6 +1151,7 @@ main(int argc, char **argv)
     pthread_t thread_mongoDB[NUM_CONN];
 	//TODO:初始化每一个连接
 	int i;
+    int select[NUM_CONN];
 	for(i=0;i<NUM_CONN;i++){
 		char COLL_NAME[256];
 		sprintf(COLL_NAME,"%s_%d",COLL_NAME_GLOBAL,i);
@@ -1164,7 +1165,8 @@ main(int argc, char **argv)
         //TODO:从这里分起一个线程，用于做dpdk以外的事情，准备异步写入数据库
 
         int pthread_create_result=0;
-        if( (pthread_create_result=pthread_create(&thread_mongoDB[i],NULL,thread_mongoDB_fun,(void*)&i))!=0)
+        select[i]=i;
+        if( (pthread_create_result=pthread_create(&thread_mongoDB[i],NULL,thread_mongoDB_fun,(void*)&select[i]))!=0)
         {
             printf("can't create thread: %s\n",strerror(pthread_create_result));
             return 1;
