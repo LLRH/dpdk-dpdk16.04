@@ -844,6 +844,7 @@ int update_mongodb (control_register_t *control_register_hdr)
 
 static inline __attribute__((always_inline)) void
 process_register(control_register_t *control_register_hdr){
+    char LOG_TEMP[1024];
     switch(control_register_hdr->type)
     {
         case REGISTER_TYPE_ADD:
