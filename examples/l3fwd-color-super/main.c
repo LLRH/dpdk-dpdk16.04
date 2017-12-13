@@ -970,6 +970,7 @@ void * thread_mongoDB_fun(){
     }else{
         printf("set affinity successfully");
     }
+    fflush(stdout);
     while(1){
 
     }
