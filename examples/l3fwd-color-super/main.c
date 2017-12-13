@@ -957,10 +957,10 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
-extern control_register_t registerBuff[NUM_CONN];
-extern bool isFull[NUM_CONN];
-extern pthread_mutex_t buffLock[NUM_CONN];
-extern pthread_cond_t buffCond[NUM_CONN];
+control_register_t registerBuff[NUM_CONN];
+bool isFull[NUM_CONN];
+pthread_mutex_t buffLock[NUM_CONN];
+pthread_cond_t buffCond[NUM_CONN];
 
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
