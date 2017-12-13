@@ -888,11 +888,22 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
-                pthread_mutex_lock(&buffLock);
-                memcpy(&registerBuff,control_register_hdr, sizeof(control_register_t));
-                isFull = true;
-                pthread_mutex_unlock(&buffLock);
-                pthread_cond_signal(&buffCond);
+                ret = pthread_mutex_trylock(p_ctr_data_lock);
+                if (0 == ret) {
+                    //the lock isnt used
+                    //如果被锁定
+                    memcpy(&registerBuff,control_register_hdr, sizeof(control_register_t));
+                    isFull = true;
+                    pthread_mutex_unlock(&buffLock);
+                    pthread_cond_signal(&buffCond);
+                    pthread_mutex_unlock(p_ctr_data_lock);
+                } else if(EBUSY == ret){
+                    //锁正在被使用;
+                    printf("锁正在被使用\n");
+                }
+
+
+
 
                 //TODO:处理注册包
                 //process_register(&registerBuff);
