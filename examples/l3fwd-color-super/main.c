@@ -1169,7 +1169,7 @@ main(int argc, char **argv)
             printf("can't create thread: %s\n",strerror(pthread_create_result));
             return 1;
         }else{
-            printf("create thread successfully\n");
+            printf("create thread successfully <i=%d>\n",i);
         }
 
 	}
