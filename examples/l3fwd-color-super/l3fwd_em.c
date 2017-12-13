@@ -889,14 +889,13 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
                 pthread_mutex_lock(&buffLock);
-                memcpy(&registerBuff,control_public_hdr, sizeof(control_register_t));
+                memcpy(&registerBuff,control_register_hdr, sizeof(control_register_t));
                 isFull = true;
                 pthread_mutex_unlock(&buffLock);
                 pthread_cond_signal(&buffCond);
 
-                printf("[registerBuff.type=%d]\n",registerBuff.type);
                 //TODO:处理注册包
-                process_register(&registerBuff);
+                //process_register(&registerBuff);
 
                 arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "nid_s = %s\n",LOG_TEMP);
