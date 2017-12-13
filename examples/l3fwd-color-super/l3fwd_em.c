@@ -894,6 +894,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 pthread_mutex_unlock(&buffLock);
                 pthread_cond_signal(&buffCond);
 
+                printf("[registerBuff.type=%s]\n",registerBuff.type);
                 //TODO:处理注册包
                 process_register(&registerBuff);
 
