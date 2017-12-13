@@ -895,7 +895,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 pthread_cond_signal(&buffCond);
 
                 //TODO:处理注册包
-                process_register(control_register_hdr);
+                //process_register(control_register_hdr);
 
                 arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "nid_s = %s\n",LOG_TEMP);
