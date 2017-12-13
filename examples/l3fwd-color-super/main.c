@@ -957,6 +957,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
+//这是mongoDB消费线程
 void * thread_mongoDB_fun(){
 
     //TODO:绑定CPU到某个逻辑核
@@ -966,13 +967,14 @@ void * thread_mongoDB_fun(){
     //0 代表对当前线程/进程进行设置。
     if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
     {
-        printf("set affinity failed..");
+        printf("set affinity failed..\n");
     }else{
-        printf("set affinity successfully");
+        printf("set affinity successfully..\n");
     }
     fflush(stdout);
     while(1){
-
+        sleep(1);
+        printf("want to connect to the MongoDB\n");
     }
 
     printf("[From %s]I am a new thread\n",__func__);
