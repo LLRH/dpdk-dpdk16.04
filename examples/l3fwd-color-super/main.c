@@ -957,10 +957,10 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
-control_register_t registerBuff[NUM_CONN];
-bool isFull[NUM_CONN];
-pthread_mutex_t buffLock[NUM_CONN];
-pthread_cond_t buffCond[NUM_CONN];
+control_register_t registerBuff[NUM_PTHREAD];
+bool isFull[NUM_PTHREAD];
+pthread_mutex_t buffLock[NUM_PTHREAD];
+pthread_cond_t buffCond[NUM_PTHREAD];
 
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
@@ -988,7 +988,7 @@ void * thread_mongoDB_fun(void *arg){
             printf("[%s]waiting for buff!\n",__func__);
             pthread_cond_wait(&buffCond[select],&buffLock[select]);
         }
-        printf("connet the mongoDB\n");
+        //printf("connet the mongoDB\n");
         process_register(&registerBuff[select]);
         isFull[select] = false;
         pthread_mutex_unlock(&buffLock[select]);
@@ -1148,10 +1148,9 @@ main(int argc, char **argv)
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&client,&database,&collection);
 
-    pthread_t thread_mongoDB[NUM_CONN];
+    pthread_t thread_mongoDB[NUM_PTHREAD];
 	//TODO:初始化每一个连接
 	int i;
-    int select[NUM_CONN];
 	for(i=0;i<NUM_CONN;i++){
 		char COLL_NAME[256];
 		sprintf(COLL_NAME,"%s_%d",COLL_NAME_GLOBAL,i);
@@ -1176,7 +1175,26 @@ main(int argc, char **argv)
 
 	}
 
+    int select[NUM_PTHREAD];
+    for(i=0;i<NUM_PTHREAD;i++){
 
+        isFull[i]=false;
+        pthread_mutex_init(&buffLock[i],NULL);
+        pthread_cond_init(&buffCond[i],NULL);
+
+        //TODO:从这里分起一个线程，用于做dpdk以外的事情，准备异步写入数据库
+
+        int pthread_create_result=0;
+        select[i]=i;
+        if( (pthread_create_result=pthread_create(&thread_mongoDB[i],NULL,thread_mongoDB_fun,(void*)&select[i]))!=0)
+        {
+            printf("can't create thread: %s\n",strerror(pthread_create_result));
+            return 1;
+        }else{
+            printf("create thread successfully <i=%d>\n",i);
+        }
+
+    }
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)

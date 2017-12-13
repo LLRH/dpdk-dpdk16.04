@@ -270,9 +270,13 @@ extern mongoc_database_t    *databases[NUM_CONN];
 extern mongoc_collection_t  *collections[NUM_CONN];
 
 
-extern control_register_t registerBuff[NUM_CONN];
-extern bool isFull[NUM_CONN];
-extern pthread_mutex_t buffLock[NUM_CONN];
-extern pthread_cond_t buffCond[NUM_CONN];
+//TODO:强烈建议 NUM_PTHREAD=NUM_CONN
+//定义线程的个数
+#define NUM_PTHREAD 4
+
+extern control_register_t registerBuff[NUM_PTHREAD];
+extern bool isFull[NUM_PTHREAD];
+extern pthread_mutex_t buffLock[NUM_PTHREAD];
+extern pthread_cond_t buffCond[NUM_PTHREAD];
 
 #endif  /* __L3_FWD_H__ */

@@ -888,7 +888,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
-                int select = control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN;
+                //TODO:分到对应的线程上
+                int select = control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_PTHREAD;
                 int ret = pthread_mutex_trylock(&buffLock[select]);
                 if (0 == ret) {
                     //the lock isnt used
