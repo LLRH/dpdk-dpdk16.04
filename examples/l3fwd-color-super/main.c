@@ -1163,7 +1163,7 @@ main(int argc, char **argv)
         //TODO:从这里分起一个线程，用于做dpdk以外的事情，准备异步写入数据库
 
         int pthread_create_result=0;
-        if( (pthread_create_result=pthread_create(&thread_mongoDB,NULL,thread_mongoDB_fun[i],(void*)&i))!=0)
+        if( (pthread_create_result=pthread_create(&thread_mongoDB[i],NULL,thread_mongoDB_fun,(void*)&i))!=0)
         {
             printf("can't create thread: %s\n",strerror(pthread_create_result));
             return 1;

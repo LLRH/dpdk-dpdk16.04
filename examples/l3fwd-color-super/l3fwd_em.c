@@ -903,8 +903,6 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 }
 
 
-
-
                 //TODO:处理注册包
                 //process_register(&registerBuff);
 
