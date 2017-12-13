@@ -957,7 +957,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
-control_register_hdr registerBuff;
+control_register_t registerBuff;
 bool isFull=false;
 pthread_mutex_t buffLock=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t buffCond = PTHREAD_COND_INITIALIZER;

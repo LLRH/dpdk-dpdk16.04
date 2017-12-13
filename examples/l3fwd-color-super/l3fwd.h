@@ -270,7 +270,7 @@ extern mongoc_database_t    *databases[NUM_CONN];
 extern mongoc_collection_t  *collections[NUM_CONN];
 
 
-extern control_register_hdr registerBuff;
+extern control_register_t registerBuff;
 extern bool isFull;
 extern pthread_mutex_t buffLock;
 extern pthread_cond_t buffCond;
