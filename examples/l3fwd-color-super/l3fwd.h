@@ -268,4 +268,10 @@ extern mongoc_client_t      *clients[NUM_CONN];
 extern mongoc_database_t    *databases[NUM_CONN];
 extern mongoc_collection_t  *collections[NUM_CONN];
 
+
+extern control_register_hdr registerBuff;
+extern bool isFull;
+extern pthread_mutex_t buffLock;
+extern pthread_cond_t buffCond;
+
 #endif  /* __L3_FWD_H__ */

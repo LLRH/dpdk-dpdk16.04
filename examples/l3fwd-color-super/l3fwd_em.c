@@ -683,7 +683,6 @@ const char* _DEAD_TIME ="_dead_time";
 int
 insert_mongodb (control_register_t *control_register_hdr)
 {
-
     mongoc_collection_t  *collection_local;
     collection_local=collection;
     if(NUM_CONN > 0){
@@ -873,6 +872,11 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
+
+                pthread_mutex_lock(&buffLock);
+                isFull==true;
+                pthread_mutex_unlock(&buffLock);
+                pthread_cond_signal(&buffCond);
 
                 switch(control_register_hdr->type)
 				{

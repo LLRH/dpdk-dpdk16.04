@@ -957,6 +957,11 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
+control_register_hdr registerBuff;
+bool isFull=false;
+pthread_mutex_t buffLock=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t buffCond = PTHREAD_COND_INITIALIZER;
+
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(){
 
@@ -973,8 +978,16 @@ void * thread_mongoDB_fun(){
     }
     fflush(stdout);
     while(1){
-        sleep(1);
-        printf("want to connect to the MongoDB\n");
+        //TODO?这里要消费请求包里面的SID
+        pthread_mutex_lock(&buffLock);
+        while(isFull == false)
+        {
+            printf("[%s]waiting for buff!\n");
+            pthread_cond_wait(&buffCond,&buffLock);
+        }
+        printf("connet the mongoDB\n");
+        isFull== true;
+        pthread_mutex_unlock(&buffLock);
     }
 
     printf("[From %s]I am a new thread\n",__func__);
