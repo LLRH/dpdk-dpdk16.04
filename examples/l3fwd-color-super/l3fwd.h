@@ -246,6 +246,7 @@ lpm_get_ipv4_l3fwd_lookup_struct(const int socketid);
 void *
 lpm_get_ipv6_l3fwd_lookup_struct(const int socketid);
 
+#include "CoLoR.h"
 
 //TODO:For mongodb数据库
 //For mongodb
