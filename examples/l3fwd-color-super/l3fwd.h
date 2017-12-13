@@ -270,9 +270,9 @@ extern mongoc_database_t    *databases[NUM_CONN];
 extern mongoc_collection_t  *collections[NUM_CONN];
 
 
-extern control_register_t registerBuff;
-extern bool isFull;
-extern pthread_mutex_t buffLock;
-extern pthread_cond_t buffCond;
+extern control_register_t registerBuff[NUM_CONN];
+extern bool isFull[NUM_CONN];
+extern pthread_mutex_t buffLock[NUM_CONN];
+extern pthread_cond_t buffCond[NUM_CONN];
 
 #endif  /* __L3_FWD_H__ */
