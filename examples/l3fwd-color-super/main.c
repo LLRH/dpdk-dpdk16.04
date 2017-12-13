@@ -958,6 +958,22 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 }
 
 void * thread_mongoDB_fun(){
+
+    //TODO:绑定CPU到某个逻辑核
+    cpu_set_t mask;
+    _CPU_ZERO(&mask);
+    _CPU_SET(0x08, &mask);      //绑定cpu 1
+    //0 代表对当前线程/进程进行设置。
+    if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
+    {
+        printf("set affinity failed..");
+    }else{
+        printf("set affinity successfully");
+    }
+    while(1){
+
+    }
+
     printf("[From %s]I am a new thread\n",__func__);
 }
 
