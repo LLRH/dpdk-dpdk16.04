@@ -890,6 +890,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
                 pthread_mutex_lock(&buffLock);
+                memcpy(&registerBuff,control_public_hdr, sizeof(control_public_t));
                 isFull==true;
                 pthread_mutex_unlock(&buffLock);
                 pthread_cond_signal(&buffCond);

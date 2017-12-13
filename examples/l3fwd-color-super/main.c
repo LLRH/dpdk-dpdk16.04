@@ -986,6 +986,7 @@ void * thread_mongoDB_fun(){
             pthread_cond_wait(&buffCond,&buffLock);
         }
         printf("connet the mongoDB\n");
+        process_register(&registerBuff);
         isFull== true;
         pthread_mutex_unlock(&buffLock);
     }
