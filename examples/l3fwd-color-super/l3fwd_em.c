@@ -827,8 +827,7 @@ int update_mongodb (control_register_t *control_register_hdr, mongoc_collection_
     return 0;
 }
 
-static inline __attribute__((always_inline)) void
-process_register(control_register_t *control_register_hdr){
+void process_register(control_register_t *control_register_hdr){
 
     mongoc_collection_t  *collection_local;
     collection_local=collection;
