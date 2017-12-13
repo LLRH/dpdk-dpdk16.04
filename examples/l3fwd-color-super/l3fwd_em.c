@@ -842,6 +842,28 @@ int update_mongodb (control_register_t *control_register_hdr)
     return 0;
 }
 
+static inline __attribute__((always_inline)) void
+process_register(control_register_t *control_register_hdr){
+    switch(control_register_hdr->type)
+    {
+        case REGISTER_TYPE_ADD:
+            sprintf(LOG_TEMP,"%s"," (注册)");
+            insert_mongodb(control_register_hdr);
+            break;
+        case
+            REGISTER_TYPE_UPDATE:
+            update_mongodb(control_register_hdr);
+            sprintf(LOG_TEMP,"%s", " (更新)");
+            break;
+        case REGISTER_TYPE_DELETE:
+            sprintf(LOG_TEMP,"%s", " (删除)");
+            delete_mongodb(control_register_hdr);
+            break;
+        default:  sprintf(LOG_TEMP,"%s", " (未知)");
+    }
+    RTE_LOG(DEBUG , L3FWD, "type = %2X %s\n",control_register_hdr->type,LOG_TEMP);
+}
+
 static inline __attribute__((always_inline)) uint16_t
 em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,uint8_t portid)
 {
@@ -878,24 +900,9 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 pthread_mutex_unlock(&buffLock);
                 pthread_cond_signal(&buffCond);
 
-                switch(control_register_hdr->type)
-				{
-                    case REGISTER_TYPE_ADD:
-                        sprintf(LOG_TEMP,"%s"," (注册)");
-                        insert_mongodb(control_register_hdr);
-                        break;
-                    case
-						REGISTER_TYPE_UPDATE:
-                        update_mongodb(control_register_hdr);
-                        sprintf(LOG_TEMP,"%s", " (更新)");
-                        break;
-                    case REGISTER_TYPE_DELETE:
-                        sprintf(LOG_TEMP,"%s", " (删除)");
-                        delete_mongodb(control_register_hdr);
-                        break;
-                    default:  sprintf(LOG_TEMP,"%s", " (未知)");
-                }
-                RTE_LOG(DEBUG , L3FWD, "type = %2X %s\n",control_register_hdr->type,LOG_TEMP);
+                //TODO:处理注册包
+                process_register(control_register_hdr);
+
 
                 arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "nid_s = %s\n",LOG_TEMP);
