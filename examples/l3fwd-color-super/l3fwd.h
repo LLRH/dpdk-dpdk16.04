@@ -258,7 +258,6 @@ extern mongoc_database_t    *database;
 extern mongoc_collection_t  *collection;
 
 
-
 //定义连接的个数
 #define NUM_CONN 4
 
