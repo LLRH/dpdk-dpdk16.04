@@ -820,7 +820,7 @@ int delete_mongodb (control_register_t *control_register_hdr, mongoc_collection_
 }
 
 //TODO:更新mongoDB数据库的内容  ---》先删除，再添加！
-int update_mongodb (control_register_t *control_register_hdr, ongoc_collection_t  *collection_local)
+int update_mongodb (control_register_t *control_register_hdr, mongoc_collection_t  *collection_local)
 {
 	delete_mongodb(control_register_hdr,collection_local);
 	insert_mongodb(control_register_hdr,collection_local);
