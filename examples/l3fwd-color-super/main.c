@@ -1160,19 +1160,6 @@ main(int argc, char **argv)
         isFull[i]=false;
         pthread_mutex_init(&buffLock[i],NULL);
         pthread_cond_init(&buffCond[i],NULL);
-
-        //TODO:从这里分起一个线程，用于做dpdk以外的事情，准备异步写入数据库
-
-        int pthread_create_result=0;
-        select[i]=i;
-        if( (pthread_create_result=pthread_create(&thread_mongoDB[i],NULL,thread_mongoDB_fun,(void*)&select[i]))!=0)
-        {
-            printf("can't create thread: %s\n",strerror(pthread_create_result));
-            return 1;
-        }else{
-            printf("create thread successfully <i=%d>\n",i);
-        }
-
 	}
 
     int select[NUM_PTHREAD];
