@@ -957,6 +957,10 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
+void thread_mongoDB_fun(){
+    printf("[From %s]I am a new thread\n",__func__);
+}
+
 
 int
 main(int argc, char **argv)
@@ -1205,7 +1209,19 @@ main(int argc, char **argv)
 	rte_timer_reset(&timer0, hz, PERIODICAL, timer0_lcore_id, timer0_cb, NULL);
 	//lcore_mainloop(NULL);
 
-	
+
+    //TODO:从这里分起一个线程，用于做dpdk以外的事情，准备异步写入数据库
+
+    int pthread_create_result=0;
+    pthread_t thread_mongoDB;
+    if( (pthread_create_result=pthread_create(&thread_mongoDB,NULL,thread_mongoDB_fun,(void*)&lcore_id) )!=0)
+    {
+        printf("can't create thread: %s\n",strerror(pthread_create_result));
+        return 1;
+    }else{
+        printf("create thread successfully\n");
+    }
+
 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
 		if (rte_eal_wait_lcore(lcore_id) < 0) {
 			ret = -1;
