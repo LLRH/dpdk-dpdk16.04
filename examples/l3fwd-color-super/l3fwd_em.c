@@ -888,7 +888,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
-                /*
+
                 //TODO:分到对应的线程上
                 int select = control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_PTHREAD;
                 int ret = pthread_mutex_trylock(&buffLock[select]);
@@ -903,11 +903,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                     //锁正在被使用;
                     printf("锁正在被使用\n");
                 }
-                 */
 
 
-                //TODO:处理注册包
-                process_register(control_register_hdr);
+                //TODO:线性直接处理注册包
+                //process_register(control_register_hdr);
 
                 arrayToHexStr(&control_register_hdr->nid_s[0],NID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "nid_s = %s\n",LOG_TEMP);
