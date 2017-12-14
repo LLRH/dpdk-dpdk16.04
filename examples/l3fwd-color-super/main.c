@@ -980,6 +980,7 @@ void * thread_mongoDB_fun(void *arg){
         printf("set affinity successfully..\n");
     }
     fflush(stdout);
+    control_register_t registerBuff_temp;
     while(1){
         //TODO?这里要消费请求包里面的SID
         pthread_mutex_lock(&buffLock[select]);
@@ -989,9 +990,12 @@ void * thread_mongoDB_fun(void *arg){
             pthread_cond_wait(&buffCond[select],&buffLock[select]);
         }
         //printf("connet the mongoDB\n");
-        process_register(&registerBuff[select]);
+        //process_register(&registerBuff[select]);
+        memcpy(&registerBuff_temp,&registerBuff[select],sizeof(control_register_t));
+        //TODO:现在只是把数据拿走，还没有发送连接
         isFull[select] = false;
         pthread_mutex_unlock(&buffLock[select]);
+        process_register(&registerBuff[select]);
     }
 
     printf("[From %s]I am a new thread\n",__func__);
