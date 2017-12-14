@@ -899,8 +899,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                     //如果被锁定
                     memcpy(&registerBuff[select],control_register_hdr, sizeof(control_register_t));
                     isFull[select] = true;
-                    pthread_mutex_unlock(&buffLock[select]);
+
                     pthread_cond_signal(&buffCond[select]);
+                    pthread_mutex_unlock(&buffLock[select]);
+                    //pthread_cond_signal(&buffCond[select]);
                     freeTime++;
                 } else if(EBUSY == ret){
                     //锁正在被使用;
