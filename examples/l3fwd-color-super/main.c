@@ -957,15 +957,18 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 
 }
 
-control_register_t registerBuff[NUM_PTHREAD];
-bool isFull[NUM_PTHREAD];
-pthread_mutex_t buffLock[NUM_PTHREAD];
-pthread_cond_t buffCond[NUM_PTHREAD];
+control_register_t registerBuff[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+bool isFull[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+pthread_mutex_t buffLock[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+pthread_cond_t buffCond[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
 
     int select=*((int *)arg);
+    //TODO：一个buffer有多个线程去消费
+    select=select%NUM_PTHREAD;
+
     printf("[From %s] <i=%d>\n",__func__,select);
 
     //TODO:绑定CPU到某个逻辑核
@@ -981,7 +984,7 @@ void * thread_mongoDB_fun(void *arg){
     }
     fflush(stdout);
     control_register_t registerBuff_temp;
-    while(1){
+    while(!force_quit){
         //TODO?这里要消费请求包里面的SID
         pthread_mutex_lock(&buffLock[select]);
         while(isFull[select] == false)
@@ -1152,7 +1155,7 @@ main(int argc, char **argv)
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&client,&database,&collection);
 
-    pthread_t thread_mongoDB[NUM_PTHREAD];
+    pthread_t thread_mongoDB[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 	//TODO:初始化每一个连接
 	int i;
 	for(i=0;i<NUM_CONN;i++){
@@ -1166,7 +1169,7 @@ main(int argc, char **argv)
         pthread_cond_init(&buffCond[i],NULL);
 	}
 
-    int select[NUM_PTHREAD];
+    int select[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
     for(i=0;i<NUM_PTHREAD;i++){
 
         isFull[i]=false;

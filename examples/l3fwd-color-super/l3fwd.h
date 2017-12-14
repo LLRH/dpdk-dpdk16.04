@@ -273,10 +273,11 @@ extern mongoc_collection_t  *collections[NUM_CONN];
 //TODO:强烈建议 NUM_PTHREAD=NUM_CONN
 //定义线程的个数
 #define NUM_PTHREAD 4
+#define NUM_PTHREAD_AVERAGE 2  //TODO : 每一个位置有几个线程去消费
 
-extern control_register_t registerBuff[NUM_PTHREAD];
-extern bool isFull[NUM_PTHREAD];
-extern pthread_mutex_t buffLock[NUM_PTHREAD];
-extern pthread_cond_t buffCond[NUM_PTHREAD];
+extern control_register_t registerBuff[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+extern bool isFull[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+extern pthread_mutex_t buffLock[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+extern pthread_cond_t buffCond[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 
 #endif  /* __L3_FWD_H__ */
