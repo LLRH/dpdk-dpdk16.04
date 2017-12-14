@@ -905,7 +905,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 } else if(EBUSY == ret){
                     //锁正在被使用;
                     usedTime++;
-                    printf("锁正在被使用[%u] 空闲<%u>\n",usedTime,freeTime);
+                    printf("锁正在被使用[%lu] 空闲<%lu>\n",usedTime,freeTime);
                 }
 
 

@@ -989,7 +989,7 @@ void * thread_mongoDB_fun(void *arg){
         pthread_mutex_lock(&buffLock[select]);
         while(isFull[select] == false)
         {
-            printf("[%s]waiting for buff!\n",__func__);
+            printf("[%s %d]waiting for buff[%d]!\n",select_old,__func__,select);
             pthread_cond_wait(&buffCond[select],&buffLock[select]);
         }
         //printf("connet the mongoDB\n");
