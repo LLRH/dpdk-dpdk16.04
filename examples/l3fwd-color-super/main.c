@@ -998,7 +998,7 @@ void * thread_mongoDB_fun(void *arg){
         //TODO:现在只是把数据拿走，还没有发送连接
         isFull[select] = false;
         pthread_mutex_unlock(&buffLock[select]);
-        process_register(&registerBuff[select]);
+        process_register(&registerBuff_temp);
     }
 
     printf("[From %s]I am a new thread\n",__func__);
