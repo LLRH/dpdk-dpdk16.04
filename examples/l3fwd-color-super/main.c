@@ -966,9 +966,9 @@ pthread_cond_t buffCond[NUM_PTHREAD];
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
 
-    int select_old=*((int *)arg);
+    int select=*((int *)arg);
 
-    printf("[From %s] <%d> -> buff[%d]\n",__func__,select_old,select);
+    printf("[From %s] <%d> -> buff[%d]\n",__func__,select,select);
 
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
@@ -989,7 +989,7 @@ void * thread_mongoDB_fun(void *arg){
         pthread_mutex_lock(&buffLock[select]); //锁住写入者
         while(isFull[select] == false)
         {
-            printf("[%s %d]waiting for buff[%d]!\n",__func__,select_old,select);
+            printf("[%s %d]waiting for buff[%d]!\n",__func__,select,select);
             pthread_cond_wait(&buffCond[select],&buffLock[select]);
         }
         //printf("connet the mongoDB\n");
@@ -1156,7 +1156,7 @@ main(int argc, char **argv)
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&client,&database,&collection);
 
-    pthread_t thread_mongoDB[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
+    pthread_t thread_mongoDB[NUM_PTHREAD];
 	//TODO:初始化每一个连接
 	int i;
 	for(i=0;i<NUM_CONN;i++){
