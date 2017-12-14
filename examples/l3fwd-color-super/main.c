@@ -969,7 +969,7 @@ void * thread_mongoDB_fun(void *arg){
     //TODO：一个buffer有多个线程去消费
     int select=select_old%NUM_PTHREAD;
 
-    printf("[From %s] <%d> -> buff[s]\n",__func__,select_old,select);
+    printf("[From %s] <%d> -> buff[%d]\n",__func__,select_old,select);
 
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
