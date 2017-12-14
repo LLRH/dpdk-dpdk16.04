@@ -962,6 +962,9 @@ bool isFull[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 pthread_mutex_t buffLock[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 pthread_cond_t buffCond[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 
+
+pthread_mutex_t multiThreadLock= PTHREAD_MUTEX_INITIALIZER;
+
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
 
@@ -986,7 +989,9 @@ void * thread_mongoDB_fun(void *arg){
     control_register_t registerBuff_temp;
     while(!force_quit){
         //TODO?这里要消费请求包里面的SID
-        pthread_mutex_lock(&buffLock[select]);
+
+        pthread_mutex_lock(&buffLock[select]); //锁住写入者
+        pthread_mutex_lock(&multiThreadLock);   //锁住其他消费者
         while(isFull[select] == false)
         {
             printf("[%s %d]waiting for buff[%d]!\n",__func__,select_old,select);
@@ -997,6 +1002,7 @@ void * thread_mongoDB_fun(void *arg){
         memcpy(&registerBuff_temp,&registerBuff[select],sizeof(control_register_t));
         //TODO:现在只是把数据拿走，还没有发送连接
         isFull[select] = false;
+        pthread_mutex_unlock(&multiThreadLock);
         pthread_mutex_unlock(&buffLock[select]);
         process_register(&registerBuff_temp);
     }
