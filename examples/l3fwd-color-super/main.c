@@ -965,11 +965,11 @@ pthread_cond_t buffCond[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
 
-    int select=*((int *)arg);
+    int select_old=*((int *)arg);
     //TODO：一个buffer有多个线程去消费
-    select=select%NUM_PTHREAD;
+    int select=select_old%NUM_PTHREAD;
 
-    printf("[From %s] <i=%d>\n",__func__,select);
+    printf("[From %s] <%d> -> buff[s]\n",__func__,select_old,select);
 
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
@@ -1170,7 +1170,7 @@ main(int argc, char **argv)
 	}
 
     int select[NUM_PTHREAD*NUM_PTHREAD_AVERAGE];
-    for(i=0;i<NUM_PTHREAD;i++){
+    for(i=0;i<NUM_PTHREAD*NUM_PTHREAD_AVERAGE;i++){
 
         isFull[i]=false;
         pthread_mutex_init(&buffLock[i],NULL);
