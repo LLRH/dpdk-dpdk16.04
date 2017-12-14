@@ -888,6 +888,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
                 RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
 
+                static uint64_t usedTime=0;
+                static uint64_t freeTime=0;
 
                 //TODO:分到对应的线程上
                 int select = control_register_hdr->l_sid[L_SID_LENGTH-1]%NUM_PTHREAD;
@@ -899,9 +901,11 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                     isFull[select] = true;
                     pthread_mutex_unlock(&buffLock[select]);
                     pthread_cond_signal(&buffCond[select]);
+                    freeTime++;
                 } else if(EBUSY == ret){
                     //锁正在被使用;
-                    printf("锁正在被使用\n");
+                    usedTime++;
+                    printf("锁正在被使用[%u] 空闲<%u>\n",usedTime,freeTime);
                 }
 
 
