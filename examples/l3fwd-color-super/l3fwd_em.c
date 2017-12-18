@@ -918,8 +918,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 				switch(control_register_hdr->scope)
 				{
 					case 1: sprintf(LOG_TEMP,"%s"," (默认上级)");	break;
-					case 2:  sprintf(LOG_TEMP,"%s"," (上级对等体)");	break;
-					case 3:  sprintf(LOG_TEMP,"%s"," (本域和邻域)");	break;
+					case 2:  sprintf(LOG_TEMP,"%s"," (本域有效)");	break;
+					case 3:  sprintf(LOG_TEMP,"%s"," (对等通告)");	break;
 					case 4:  sprintf(LOG_TEMP,"%s"," (服从策略)");	break;
 					default:  sprintf(LOG_TEMP,"%s"," (未知)");
 				}
