@@ -667,8 +667,8 @@ void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
 }
 
 //TODO:转换的时候需要对应的字段名字
-const char* N_SID ="n_sid";
-const char* L_SID="l_sid";
+const char* N_SID ="sid_p";
+const char* L_SID="sid_l";
 const char* TYPE="tpye";
 const char* NID_S="nid_s";
 const char* SCOPE="scope";
@@ -840,7 +840,7 @@ void process_register(control_register_t *control_register_hdr){
     switch(control_register_hdr->type)
     {
         case REGISTER_TYPE_ADD:
-            sprintf(LOG_TEMP,"%s"," (注册)");
+            sprintf(LOG_TEMP,"%s"," (添加)");
             insert_mongodb(control_register_hdr,collection_local);
             break;
         case
@@ -883,10 +883,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
                 RTE_LOG(DEBUG , L3FWD, "______REGISTER___INFORMATION__________\n");
 
                 arrayToHexStr(&control_register_hdr->n_sid[i],NID_LENGTH,LOG_TEMP);
-                RTE_LOG(DEBUG , L3FWD, "n_sid = %s\n",LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "sid_p = %s\n",LOG_TEMP);
 
                 arrayToHexStr(&control_register_hdr->l_sid[i],L_SID_LENGTH,LOG_TEMP);
-                RTE_LOG(DEBUG , L3FWD, "l_sid = %s\n",LOG_TEMP);
+                RTE_LOG(DEBUG , L3FWD, "sid_l = %s\n",LOG_TEMP);
 
                 static uint64_t usedTime=0;
                 static uint64_t freeTime=0;
@@ -920,7 +920,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 					case 1: sprintf(LOG_TEMP,"%s"," (默认上级)");	break;
 					case 2:  sprintf(LOG_TEMP,"%s"," (上级对等体)");	break;
 					case 3:  sprintf(LOG_TEMP,"%s"," (本域和邻域)");	break;
-					case 4:  sprintf(LOG_TEMP,"%s"," (仅本域)");	break;
+					case 4:  sprintf(LOG_TEMP,"%s"," (服从策略)");	break;
 					default:  sprintf(LOG_TEMP,"%s"," (未知)");
 				}
                 RTE_LOG(DEBUG , L3FWD, "scope = %2X %s\n",control_register_hdr->scope,LOG_TEMP);
