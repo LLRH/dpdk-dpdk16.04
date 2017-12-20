@@ -928,7 +928,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 	char * reply_str;
 
 	bson_init (&keys);
-	BSON_APPEND_INT32 (&keys, "sid_p", 1);
+	BSON_APPEND_INT32 (&keys, "sid_l", 1);
 	index_name = mongoc_collection_keys_to_index_string (&keys);
 	create_indexes = BCON_NEW ("createIndexes",
 							   BCON_UTF8 (COLL_NAME_GLOBAL),
