@@ -901,7 +901,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 	bool                  retval;
 
 	mongoc_init ();
-	(*client) = mongoc_client_new ("mongodb://localhost:27017");
+	(*client) = mongoc_client_new ("mongodb://172.16.17.125:27017");
 	mongoc_client_set_appname (*client, "[dpdk-RM]");
 	*database = mongoc_client_get_database (*client, DB_NAME_GLOBAL);
 	*collection = mongoc_client_get_collection (*client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
@@ -928,7 +928,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 	char * reply_str;
 
 	bson_init (&keys);
-	BSON_APPEND_INT32 (&keys, "l_sid", 1);
+	BSON_APPEND_INT32 (&keys, "sid_p", 1);
 	index_name = mongoc_collection_keys_to_index_string (&keys);
 	create_indexes = BCON_NEW ("createIndexes",
 							   BCON_UTF8 (COLL_NAME_GLOBAL),
