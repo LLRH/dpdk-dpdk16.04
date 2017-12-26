@@ -1,0 +1,8 @@
+# seq <seq#> <portlist> dst-Mac src-Mac dst-IP src-IP/netmask sport dport ipv4|ipv6|vlan udp|tcp|icmp vid pktsize
+
+seq 0 0 0000:4455:6677 0000:1234:5678 172.16.17.1 172.16.17.0/24 5 6 ipv4 udp 1 128
+
+seq 0 1 0000:1234:5678 0000:4455:6677 172.16.17.0 172.16.17.1/24 6 5 ipv4 udp 1 128
+
+set all seqCnt 1
+
