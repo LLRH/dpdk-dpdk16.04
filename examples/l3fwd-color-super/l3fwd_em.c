@@ -33,7 +33,7 @@
 
 #define PRINT_ON  1
 #define PRINT_OFF 0
-#define PRINT PRINT_ON 
+#define PRINT PRINT_OFF
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -866,10 +866,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	
 	ipv4_hdr = rte_pktmbuf_mtod_offset(pkt, struct ipv4_hdr *,sizeof(struct ether_hdr));
 
-    char LOG_TEMP[1024];
 
 	#if PRINT==PRINT_ON
 		int i=0;
+        char LOG_TEMP[1024];
         RTE_LOG(DEBUG , L3FWD, "------------------------------------------------------------\n");
         RTE_LOG(DEBUG , L3FWD, "proto_id=%2x\n",ipv4_hdr->next_proto_id);
 		if(ipv4_hdr->next_proto_id == TYPE_CONTROL)
@@ -1006,11 +1006,12 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	int res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
 	
 	//TODO:SID在另外一个Socket的那个表上，当时有两个Socket,现在只有一个
+/*
 	if(next_hop==255)
 	{
 		res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct_another_socket,&key_array[0] , 1,&next_hop );
 	}	
-	
+*/	
 	if (next_hop >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << next_hop) == 0)
 	{
 		next_hop = portid;
@@ -1031,7 +1032,12 @@ void l3fwd_em_send_packets_pumpking(int nb_rx, struct rte_mbuf **pkts_burst,uint
 			em_get_dst_port_ipv4x8_pumpking(qconf, &pkts_burst[j], portid, &dst_port[j]);
 	}
 */
+
+//TODO:测试什么也C
+
+
 	for (; j < nb_rx; j++){
+		//dst_port[j]= portid;
 		dst_port[j] = em_get_dst_port_pumpking(qconf, pkts_burst[j], portid);
 	}
 		
@@ -1220,23 +1226,24 @@ struct sid_port_route{
 //For Socket1  won right SID item!
 static struct sid_port_route sid_port_route_array1[]={
 	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,1}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,2}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,3}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,4}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,1}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,2}, 2},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,3}, 3},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,4}, 0},
 	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,5}, 1},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,6}, 1},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,7}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,6}, 2},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,7}, 3},
 };
 //For Socket2
 static struct sid_port_route sid_port_route_array2[]={
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,1}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,2}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,3}, 0},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,4}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0}, 0},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,1}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,2}, 2},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,3}, 3},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,4}, 0},
 	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,5}, 1},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,6}, 1},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,7}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,6}, 2},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,7}, 3},
 };
 
 /*
@@ -1700,7 +1707,7 @@ setup_hash(const int socketid)
 		rte_exit(EXIT_FAILURE,"CAN NOT CREAT CUCKOOHASH TABLE on SOCKET %d\n",socketid);
 	}
 
-	populate_socket( (cuckoo_hashtable_t*)sid_cuckoo_struct[socketid],socketid);
+	populate_socket_few( (cuckoo_hashtable_t*)sid_cuckoo_struct[socketid],socketid);
 	//populate_socket_few( (cuckoo_hashtable_t*)sid_cuckoo_struct[socketid],socketid);
 
     printf("\033[5;34m CoLoR \n\033[0m");
@@ -1772,6 +1779,6 @@ em_get_sid_l3fwd_lookup_struct(const int socketid)
 void *
 em_get_sid_l3fwd_lookup_struct_another_socket(const int socketid)
 {
-	//return sid_cuckoo_struct[ (socketid+1)%2] ;
-	return sid_cuckoo_struct[socketid];
+	return sid_cuckoo_struct[ (socketid+1)%2] ;
+	//return sid_cuckoo_struct[socketid];
 }

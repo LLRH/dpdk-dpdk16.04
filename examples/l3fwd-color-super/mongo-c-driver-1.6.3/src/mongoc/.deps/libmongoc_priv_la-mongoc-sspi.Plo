@@ -1,0 +1,6 @@
+src/mongoc/libmongoc_priv_la-mongoc-sspi.lo: src/mongoc/mongoc-sspi.c \
+ /usr/include/stdc-predef.h src/mongoc/mongoc-config.h
+
+/usr/include/stdc-predef.h:
+
+src/mongoc/mongoc-config.h:

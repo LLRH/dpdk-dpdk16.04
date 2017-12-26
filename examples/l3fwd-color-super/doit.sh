@@ -9,8 +9,8 @@ fi
 sleep 1s
 
 echo "" > dpdk.log
-./build/l3fwd -c 0x7 -n 2 --log-level $logLevel  -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
 
+./build/l3fwd -c 0xC07 --log-level $logLevel  -w 0000:04:00.0 -w 0000:04:00.1 -w 0000:82:00.0 -w 0000:82:00.1  -n 4 -- -P -E -p 0xF --config="(0,0,1),(1,0,2),(2,0,10),(3,0,11)"
 
 
 #./build/l3fwd -c 0xF3E0 -n 3  --proc-type auto \
