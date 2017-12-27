@@ -805,7 +805,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     query=BCON_NEW
             (
-                    L_SID, l_sid
+                    NULL, NULL
             );
 
     mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
