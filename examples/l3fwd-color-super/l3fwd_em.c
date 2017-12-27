@@ -785,6 +785,13 @@ int find_mongodb (CoLoR_get_t *get_hdr)
     return 0;
 }
 
+
+struct sid_port_route{
+    KeyType key_sid;
+    ValType val_port;
+};
+
+
 inline void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
     int i=0;
     for(i=0;i<NID_LENGTH;i++){
@@ -800,6 +807,7 @@ inline void convert_str_2_sid_port_route(char *value_str, struct sid_port_route 
     }
     printf("\n");
 };
+
 
 
 //TODO:测试遍历MongoDB的时间
@@ -1308,10 +1316,6 @@ em_cb_parse_ptype(uint8_t port __rte_unused, uint16_t queue __rte_unused,
 
 /**************************Wen Xingbeng***********************************/
 
-struct sid_port_route{
-	KeyType key_sid;
-	ValType val_port;
-};
 
 //For Socket1  won right SID item!
 static struct sid_port_route sid_port_route_array1[]={
