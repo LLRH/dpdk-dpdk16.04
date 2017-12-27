@@ -840,6 +840,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     printf("allCount=%"PRIu64" \n",allCount);
 
+
     uint64_t hz_timer = rte_get_timer_hz();
     uint64_t cur_tsc1 = rte_rdtsc();
 
@@ -849,6 +850,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     cuckoo_hashtable_t *h;
     struct sid_port_route item;
     h=sid_cuckoo_struct[0];
+    cuckoo_report(h);
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
@@ -869,6 +871,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         count++;
         bson_free (str);
     }
+    cuckoo_report(h);
     printf("count = %"PRIu64" \n", count );
 
     uint64_t cur_tsc2 = rte_rdtsc();
