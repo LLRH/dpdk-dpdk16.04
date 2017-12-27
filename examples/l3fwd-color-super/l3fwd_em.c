@@ -772,7 +772,7 @@ int find_mongodb (CoLoR_get_t *get_hdr)
 		str = bson_as_json (doc, NULL);
 		printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
 
-        char *field_str = "l_sid";
+        char *field_str = L_SID;
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
             DBG_wxb("value_str=%s\n", value_str);
@@ -1387,7 +1387,7 @@ static struct sid_port_route sid_port_route_array2[]={
 
 
 #define myhashpower 10
-#define myhsahloader 0.95
+#define myhsahloader 0.10
 
 static long long number=(2<<(myhashpower+1))*myhsahloader;
 static uint64_t refresh_frequncey=(2<<(myhashpower+1))*myhsahloader*0.01*2;
