@@ -815,6 +815,9 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     printf("allCount=%"PRIu64" \n",allCount);
 
+    uint64_t hz_timer = rte_get_timer_hz();
+    uint64_t cur_tsc1 = rte_rdtsc();
+
     const bson_t * doc;
     uint64_t count=0;
     while (mongoc_cursor_next (cursor, &doc))
@@ -831,6 +834,10 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         bson_free (str);
     }
     printf("count = %"PRIu64" \n", count );
+
+    uint64_t cur_tsc2 = rte_rdtsc();
+    printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
+
     bson_destroy (query);
     return 0;
 }
