@@ -837,7 +837,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     uint64_t cur_tsc2 = rte_rdtsc();
     printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
-
+    printf("[About]Total duration= %f seconds for %"PRIu64" \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer*NUM_CONN,allCount*NUM_CONN);
     bson_destroy (query);
     return 0;
 }
