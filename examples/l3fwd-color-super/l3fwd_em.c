@@ -809,6 +809,10 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
             );
 
     mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
+
+    uint64_t allCount = mongoc_collection_count (
+            collection_local, MONGOC_QUERY_NONE, query, 0, 0, NULL, &error);
+
     const bson_t * doc;
     uint64_t count=0;
     while (mongoc_cursor_next (cursor, &doc))
@@ -824,7 +828,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         count++;
         bson_free (str);
     }
-    printf("count = %"PRIu64"", count);
+    printf("count = %"PRIu64" allCount=%"PRIu64" ", count ,allCount);
     bson_destroy (query);
     return 0;
 }
