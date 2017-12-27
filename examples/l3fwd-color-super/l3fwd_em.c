@@ -1410,8 +1410,8 @@ static struct sid_port_route sid_port_route_array2[]={
 */
 
 
-#define myhashpower 10
-#define myhsahloader 0.10
+#define myhashpower 22
+#define myhsahloader 0.00
 
 static long long number=(2<<(myhashpower+1))*myhsahloader;
 static uint64_t refresh_frequncey=(2<<(myhashpower+1))*myhsahloader*0.01*2;
