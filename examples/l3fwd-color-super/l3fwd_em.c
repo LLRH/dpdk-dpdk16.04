@@ -814,11 +814,11 @@ uint8_t HEX2Ten(char c){
     return 0;
 }
 
-void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
+void convert_str_2_sid_port_route(char *value_str, struct sid_port_route * item){
     puts(value_str);
     int i=0;
     for(i=0;i<NID_LENGTH;i++){
-        item.key_sid.sid[i]=i;
+        item->key_sid.sid[i]=i;
     }
     int len = strlen(value_str); //包含了 “0x” 字符串
     if(len != L_SID_LENGTH*2 + 2){
@@ -827,7 +827,7 @@ void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
     }
     for(i=0;i<L_SID_LENGTH;i++){
         //printf("[%c%c]",value_str[2*i+2],value_str[2*i+1+2]);
-        item.key_sid.sid[i+NID_LENGTH];
+        item->key_sid.sid[i+NID_LENGTH];
         //printf("[%u]",HEX2Ten(value_str[2*i+2])*16+HEX2Ten(value_str[2*i+1+2]));
     }
     printf("\n");
@@ -886,7 +886,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
             DBG_wxb("value_str=%s\n", value_str);
-            convert_str_2_sid_port_route(value_str,item);
+            convert_str_2_sid_port_route(value_str,&item);
             cuckoo_status st=cuckoo_insert(h, (char *)&item.key_sid, (char *)&item.val_port);
             if(st!=ok){
                 printf("\033[5;34m Insert Error!\n \033[0m");
