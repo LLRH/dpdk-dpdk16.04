@@ -1033,7 +1033,8 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
             int res = scanf("%d",&recover_flag);
             if(recover_flag){
                 printf("Begin to recover from MongoDB\n");
-
+                find_mongodb_all(get_hdr);
+                printf("recover from MongoDB finished\n");
             }
 
             //TODO:测试删除的功能，查找后并删除这个记录
