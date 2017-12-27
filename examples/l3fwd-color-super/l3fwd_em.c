@@ -815,7 +815,7 @@ uint8_t HEX2Ten(char c){
 }
 
 void convert_str_2_sid_port_route(char *value_str, struct sid_port_route * item){
-    puts(value_str);
+    //puts(value_str);
     int i=0;
     for(i=0;i<NID_LENGTH;i++){
         item->key_sid.sid[i]=i;
@@ -885,7 +885,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         char *field_str = (char *)L_SID;
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
-            DBG_wxb("value_str=%s\n", value_str);
+            //DBG_wxb("value_str=%s\n", value_str);
             convert_str_2_sid_port_route(value_str,&item);
             cuckoo_status st=cuckoo_insert(h, (char *)&item.key_sid, (char *)&item.val_port);
             if(st!=ok){
