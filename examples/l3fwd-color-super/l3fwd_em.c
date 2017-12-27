@@ -830,7 +830,7 @@ void convert_str_2_sid_port_route(char *value_str, struct sid_port_route * item)
         item->key_sid.sid[i+NID_LENGTH]=HEX2Ten(value_str[2*i+2])*16+HEX2Ten(value_str[2*i+1+2]);
         //printf("[%u]",HEX2Ten(value_str[2*i+2])*16+HEX2Ten(value_str[2*i+1+2]));
     }
-    printf("\n");
+    //printf("\n");
 };
 
 
