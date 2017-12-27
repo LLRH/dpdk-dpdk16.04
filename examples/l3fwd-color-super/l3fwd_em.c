@@ -824,7 +824,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         count++;
         bson_free (str);
     }
-    printf("count = lu %", count);
+    printf("count = PRIu64%", count);
     bson_destroy (query);
     return 0;
 }
