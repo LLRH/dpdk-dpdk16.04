@@ -810,6 +810,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
     const bson_t * doc;
+    uint64_t count=0;
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
@@ -820,10 +821,10 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         if(Json_get_by_field(str, field_str, value_str)){
             DBG_wxb("value_str=%s\n", value_str);
         }
-
+        count++;
         bson_free (str);
     }
-
+    printf("count = lu %", count);
     bson_destroy (query);
     return 0;
 }
