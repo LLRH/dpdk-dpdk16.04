@@ -785,6 +785,50 @@ int find_mongodb (CoLoR_get_t *get_hdr)
     return 0;
 }
 
+//TODO:测试遍历MongoDB的时间
+int find_mongodb_all (CoLoR_get_t *get_hdr)
+{
+
+    mongoc_collection_t  *collection_local;
+    collection_local=collection;
+    if(NUM_CONN > 0){
+        //TODO：根据L_SID的最后一位求余数 判断
+        collection_local=collections[get_hdr->l_sid[L_SID_LENGTH-1]%NUM_CONN];
+    }
+
+    bson_t               *query;
+    bson_error_t         error;
+    char                 *str;
+
+    char l_sid[MAX_CONVERT_LEN];
+    arrayToHexStr(&get_hdr->l_sid[0], L_SID_LENGTH, l_sid);
+
+    //这里去掉了查询的条件，应该会返回所以得结果
+    query=BCON_NEW
+            (
+                    //L_SID, l_sid
+            );
+
+    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
+    const bson_t * doc;
+    while (mongoc_cursor_next (cursor, &doc))
+    {
+        str = bson_as_json (doc, NULL);
+        printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
+
+        char *field_str = "l_sid";
+        char value_str[100];
+        if(Json_get_by_field(str, field_str, value_str)){
+            DBG_wxb("value_str=%s\n", value_str);
+        }
+
+        bson_free (str);
+    }
+
+    bson_destroy (query);
+    return 0;
+}
+
 //TODO:删除mongoDB数据库的内容
 int delete_mongodb (control_register_t *control_register_hdr, mongoc_collection_t  *collection_local)
 {
@@ -984,10 +1028,14 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 			find_mongodb (get_hdr);
             printf("[From %s]find_mongodb over\n",__func__);
 
+
             int recover_flag;
             printf("Do you want to recover from MongoDB(0=false,other=true):");
-            scanf("%d",&recover_flag);
-            printf("Begin to recover from MongoDB\n");
+            int res = scanf("%d",&recover_flag);
+            if(recover_flag){
+                printf("Begin to recover from MongoDB\n");
+
+            }
 
             //TODO:测试删除的功能，查找后并删除这个记录
 
