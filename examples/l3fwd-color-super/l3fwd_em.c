@@ -785,8 +785,7 @@ int find_mongodb (CoLoR_get_t *get_hdr)
     return 0;
 }
 
-
-static void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
+inline void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
     int i=0;
     for(i=0;i<NID_LENGTH;i++){
         item.key_sid.sid[i]=0;
