@@ -824,12 +824,14 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     {
         str = bson_as_json (doc, NULL);
         //printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
-
+        //TODO:暂时不解析
+        /*
         char *field_str = "l_sid";
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
             //DBG_wxb("value_str=%s\n", value_str);
         }
+        */
         count++;
         bson_free (str);
     }
