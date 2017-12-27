@@ -806,7 +806,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     //这里去掉了查询的条件，应该会返回所以得结果
     query=BCON_NEW
             (
-                    //L_SID, l_sid
+                    ,//L_SID, l_sid
             );
 
     mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
