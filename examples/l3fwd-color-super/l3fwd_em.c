@@ -826,8 +826,9 @@ void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
         exit(0);
     }
     for(i=0;i<L_SID_LENGTH;i++){
-        printf("[%c%c]",value_str[2*i+2],value_str[2*i+1+2]);
-        printf("[%u]",HEX2Ten(value_str[2*i+2])*16+HEX2Ten(value_str[2*i+1+2]));
+        //printf("[%c%c]",value_str[2*i+2],value_str[2*i+1+2]);
+        item.key_sid.sid[i+NID_LENGTH];
+        //printf("[%u]",HEX2Ten(value_str[2*i+2])*16+HEX2Ten(value_str[2*i+1+2]));
     }
     printf("\n");
 };
