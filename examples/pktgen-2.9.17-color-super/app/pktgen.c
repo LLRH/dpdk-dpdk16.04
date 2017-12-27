@@ -758,7 +758,7 @@ pktgen_CoLoR_modify(struct rte_mbuf *m)
 	CoLoR_get_t * get_hdr=(CoLoR_get_t *)( rte_pktmbuf_mtod(m,unsigned char*)+sizeof(struct ether_hdr)+sizeof(ipHdr_t) );
 
 	get_hdr->version_type=GET_PACKET;
-	static int PIDS=32;
+	static int PIDS=0;
 	//PIDS=(PIDS+1)%17;
 	//This field means the number of PIDs!
 	get_hdr->PIDs=PIDS;
