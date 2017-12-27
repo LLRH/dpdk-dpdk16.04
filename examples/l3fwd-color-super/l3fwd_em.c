@@ -798,13 +798,13 @@ void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
     for(i=0;i<NID_LENGTH;i++){
         item.key_sid.sid[i]=i;
     }
-    int len = strlen(value_str);
-    if(len != L_SID_LENGTH*2){
+    int len = strlen(value_str); //包含了 “0x” 字符串
+    if(len != L_SID_LENGTH*2 + 2){
         printf("Error in prase");
         exit(0);
     }
     for(i=0;i<L_SID_LENGTH;i++){
-        printf("[%c%c]",value_str[2*i],value_str[2*i+1]);
+        printf("[%c%c]",value_str[2*i+2],value_str[2*i+1+2]);
     }
     printf("\n");
 };
