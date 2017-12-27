@@ -813,22 +813,24 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     uint64_t allCount = mongoc_collection_count (
             collection_local, MONGOC_QUERY_NONE, query, 0, 0, NULL, &error);
 
+    printf("allCount=%"PRIu64" \n",allCount);
+
     const bson_t * doc;
     uint64_t count=0;
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
-        printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
+        //printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
 
         char *field_str = "l_sid";
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
-            DBG_wxb("value_str=%s\n", value_str);
+            //DBG_wxb("value_str=%s\n", value_str);
         }
         count++;
         bson_free (str);
     }
-    printf("count = %"PRIu64" allCount=%"PRIu64" ", count ,allCount);
+    printf("count = %"PRIu64" \n", count );
     bson_destroy (query);
     return 0;
 }
