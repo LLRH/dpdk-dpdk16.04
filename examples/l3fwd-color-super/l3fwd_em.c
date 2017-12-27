@@ -808,7 +808,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
                     L_SID, l_sid
             );
 
-    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, NULL, NULL, NULL);
+    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
     const bson_t * doc;
     while (mongoc_cursor_next (cursor, &doc))
     {
