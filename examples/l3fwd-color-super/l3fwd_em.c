@@ -983,6 +983,12 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 			CoLoR_get_t * get_hdr=(CoLoR_get_t *)(ipv4_hdr+1);
 			find_mongodb (get_hdr);
             printf("[From %s]find_mongodb over\n",__func__);
+
+            int recover_flag;
+            printf("Do you want to recover from MongoDB(0=false,other=true):");
+            scanf("%d",&recover_flag);
+            printf("Begin to recover from MongoDB\n");
+
             //TODO:测试删除的功能，查找后并删除这个记录
 
 		}
