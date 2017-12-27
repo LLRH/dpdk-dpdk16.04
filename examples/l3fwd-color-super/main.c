@@ -901,7 +901,7 @@ void create_a_collection_connection(char *DB_NAME_GLOBAL,char * COLL_NAME_GLOBAL
 	bool                  retval;
 
 	mongoc_init ();
-	(*client) = mongoc_client_new ("mongodb://172.16.17.125:27017");
+	(*client) = mongoc_client_new ("mongodb://127.0.0.1:27017");
 	mongoc_client_set_appname (*client, "[dpdk-RM]");
 	*database = mongoc_client_get_database (*client, DB_NAME_GLOBAL);
 	*collection = mongoc_client_get_collection (*client, DB_NAME_GLOBAL, COLL_NAME_GLOBAL);
@@ -989,7 +989,7 @@ void * thread_mongoDB_fun(void *arg){
         pthread_mutex_lock(&buffLock[select]); //锁住写入者
         while(isFull[select] == false)
         {
-            printf("[%s %d]waiting for buff[%d]!\n",__func__,select,select);
+//            printf("[%s %d]waiting for buff[%d]!\n",__func__,select,select);
             pthread_cond_wait(&buffCond[select],&buffLock[select]);
         }
         //printf("connet the mongoDB\n");

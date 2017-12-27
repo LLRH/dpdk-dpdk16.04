@@ -260,7 +260,7 @@ extern mongoc_collection_t  *collection;
 
 
 //定义连接的个数
-#define NUM_CONN 4
+#define NUM_CONN 16
 
 //TODO:如果NUM_CONN=0，表示弃用以下数据，还是用上面的当个连接!!!
 //TODO：区分连接的方式为 l_sid最后一个值 对 NUM_CONN 取余
@@ -272,7 +272,7 @@ extern mongoc_collection_t  *collections[NUM_CONN];
 
 //TODO:强烈建议 NUM_PTHREAD=NUM_CONN
 //定义线程的个数
-#define NUM_PTHREAD 4
+#define NUM_PTHREAD 16
 
 extern control_register_t registerBuff[NUM_PTHREAD];
 extern bool isFull[NUM_PTHREAD];

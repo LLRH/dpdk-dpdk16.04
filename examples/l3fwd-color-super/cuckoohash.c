@@ -846,12 +846,12 @@ void cuckoo_report(cuckoo_hashtable_t* h)
 {
     size_t sz;
     sz = sizeof(Bucket) * hashsize(h->hashpower);
-    DBG("total number of items %zu\n", h->hashitems);
+    DBG("total number of items %zu\n", h->hashitems*4);
 	/*
 	for(int i = 0; i < h->hashpower; i++){
 		DBG("the items is %zu\n", h->hashitem);
 		}
 	*/
-    DBG("total size %zu Bytes, or %.2f MB\n", sz, (float) sz / (1 <<20));
+    DBG("total size %zu Bytes, or %.2f MB\n", sz*4, (float) sz / (1 <<20)*4);
     DBG("load factor %.4f\n", 1.0 * h->hashitems / bucketsize / hashsize(h->hashpower));
 }
