@@ -793,9 +793,10 @@ struct sid_port_route{
 
 
 inline void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
+    puts(value_str);
     int i=0;
     for(i=0;i<NID_LENGTH;i++){
-        item.key_sid.sid[i]=0;
+        item.key_sid.sid[i]=i;
     }
     int len = strlen(value_str);
     if(len != L_SID_LENGTH*2){
