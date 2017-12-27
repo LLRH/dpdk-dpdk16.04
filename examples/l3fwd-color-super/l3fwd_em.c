@@ -785,6 +785,24 @@ int find_mongodb (CoLoR_get_t *get_hdr)
     return 0;
 }
 
+
+static void convert_str_2_sid_port_route(char *value_str, struct sid_port_route item){
+    int i=0;
+    for(i=0;i<NID_LENGTH;i++){
+        item.key_sid.sid[i]=0;
+    }
+    int len = strlen(value_str);
+    if(len != L_SID_LENGTH*2){
+        printf("Error in prase");
+        exit(0);
+    }
+    for(i=0;i<L_SID_LENGTH;i++){
+        printf("[%c%c]",value_str[2*i],value_str[2*i+1]);
+    }
+    printf("\n");
+};
+
+
 //TODO:测试遍历MongoDB的时间
 int find_mongodb_all (CoLoR_get_t *get_hdr)
 {
@@ -820,6 +838,10 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     const bson_t * doc;
     uint64_t count=0;
+
+    cuckoo_hashtable_t *h;
+    struct sid_port_route item;
+    h=&sid_cuckoo_struct[0];
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
@@ -830,6 +852,11 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
             //DBG_wxb("value_str=%s\n", value_str);
+            convert_str_2_sid_port_route(value_str,item);
+            cuckoo_status st=cuckoo_insert(h, (char *)&item.key_sid, (char *)&item.val_port);
+            if(st!=ok){
+                printf("\033[5;34m Insert Error!\n \033[0m");
+            }
         }
 
         count++;
