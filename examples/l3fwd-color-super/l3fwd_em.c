@@ -840,7 +840,7 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
 
     cuckoo_hashtable_t *h;
     struct sid_port_route item;
-    h=&sid_cuckoo_struct[0];
+    h=sid_cuckoo_struct[0];
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
