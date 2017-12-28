@@ -1190,26 +1190,32 @@ main(int argc, char **argv)
             printf("create thread successfully <i=%d>\n",i);
         }
     }
-    recoerCount=0;
-    uint64_t hz_timer = rte_get_timer_hz();
-    uint64_t cur_tsc1 = rte_rdtsc();
-    for(i=0;i<NUM_CONN;i++){
-        //TODO:用于恢复
-        int pthread_create_result=0;
-        if( (pthread_create_result=pthread_create(&thread_recover[i],NULL,find_mongodb_all_func,(void*)&select[i]))!=0)
-        {
-            printf("can't create thread: %s\n",strerror(pthread_create_result));
-            return 1;
-        }else{
-            printf("create thread successfully <i=%d>\n",i);
-        }
-    }
-    //TODO:等待所有线程恢复
-    for(i=0;i<NUM_CONN;i++){
-        pthread_join(thread_recover[i],NULL);
-    }
-    _cuckoo_report(0);
 
+    int recover_flag;
+    printf("Do you want to recover from MongoDB(0=false,other=true):");
+    int res = scanf("%d",&recover_flag);
+    if(recover_flag) {
+
+        recoerCount = 0;
+        uint64_t hz_timer = rte_get_timer_hz();
+        uint64_t cur_tsc1 = rte_rdtsc();
+        for (i = 0; i < NUM_CONN; i++) {
+            //TODO:用于恢复
+            int pthread_create_result = 0;
+            if ((pthread_create_result = pthread_create(&thread_recover[i], NULL, find_mongodb_all_func,
+                                                        (void *) &select[i])) != 0) {
+                printf("can't create thread: %s\n", strerror(pthread_create_result));
+                return 1;
+            } else {
+                printf("create thread successfully <i=%d>\n", i);
+            }
+        }
+        //TODO:等待所有线程恢复
+        for (i = 0; i < NUM_CONN; i++) {
+            pthread_join(thread_recover[i], NULL);
+        }
+        _cuckoo_report(0);
+    }
     uint64_t cur_tsc2 = rte_rdtsc();
     printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
 
