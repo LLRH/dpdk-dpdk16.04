@@ -147,8 +147,6 @@ static inline size_t _lock_index(const uint32_t hv)
 #define TABLE_VAL(h, i, j) ((Bucket*) h->buckets)[i].vals[j]
 #define TABLE_TAG(h, i, j) ((Bucket*) h->buckets)[i].tags[j]
 
-//new add
-#define TABLE_SID(h, i, j) ((Bucket*) h->buckets)[i].keys[j]+63
 
 static inline bool is_slot_empty(cuckoo_hashtable_t* h,size_t i,size_t j) 
 {
