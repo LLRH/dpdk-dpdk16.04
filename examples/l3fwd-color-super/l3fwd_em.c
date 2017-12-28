@@ -926,6 +926,13 @@ void* find_mongodb_all_func (void *arg)
                     NULL, NULL
             );
 
+    query=BCON_NEW
+            (
+                    NULL, NULL
+            );
+
+    mongoc_cursor_t * cursor = mongoc_collection_find_with_opts (collection_local, query, NULL, NULL);
+
     uint64_t allCount = mongoc_collection_count (
             collection_local, MONGOC_QUERY_NONE, query, 0, 0, NULL, &error);
 
