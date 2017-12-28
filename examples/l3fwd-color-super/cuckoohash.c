@@ -758,7 +758,7 @@ cuckoo_find_bulk(cuckoo_hashtable_t *h, const void **keys,uint32_t num_keys, cha
 }
 
 
-cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key,const char *val,uint32_t hv,uint32_t i1)
+cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key, char *val,uint32_t hv,uint32_t i1)
  {
 
    // uint32_t hv    = _hashed_key(key);
