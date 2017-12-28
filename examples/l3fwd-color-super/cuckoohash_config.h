@@ -31,7 +31,7 @@ typedef struct{
         uint8_t sid[36];
 }KeyType;
 
-typedef char ValType;
+typedef uint16_t ValType;
 
 /* size of bulk cleaning */
 #define DEFAULT_BULK_CLEAN 1024
