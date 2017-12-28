@@ -10,7 +10,7 @@ sleep 1s
 
 echo "" > dpdk.log
 #./build/l3fwd -c 0x7 -n 2 --log-level $logLevel  -- -P -E -p 0x3 --config="(0,0,1),(1,0,2)"
-./build/l3fwd -c 0x1 -n 2 --log-level $logLevel  -- -P -E -p 0x1 --config="(0,0,0)"
+./build/l3fwd -c 0x1 -n 2 --log-level $logLevel  -- -P -E -p 0x2 --config="(1,0,0)"
 
 
 
