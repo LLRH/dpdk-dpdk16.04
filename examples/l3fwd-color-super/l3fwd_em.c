@@ -921,6 +921,7 @@ void* find_mongodb_all_func (void *arg)
         //TODO：根据L_SID的最后一位求余数 判断
         collection_local=collections[select%NUM_CONN];
     }
+    printf("[From %s]Begin to recover\n",__func__,select);
 
     bson_t               *query;
     bson_error_t         error;
@@ -941,7 +942,7 @@ void* find_mongodb_all_func (void *arg)
 
     cuckoo_hashtable_t *h;
     struct sid_port_route item;
-    h=sid_cuckoo_struct[select%2];
+    h=sid_cuckoo_struct[0];
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
