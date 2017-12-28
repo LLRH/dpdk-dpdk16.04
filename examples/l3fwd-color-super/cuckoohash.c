@@ -488,7 +488,7 @@ TryRead:
 }
 
 
-static cuckoo_status _cuckoo_find(cuckoo_hashtable_t* h,const char *key,char *val,size_t i1,size_t i2,size_t keylock,char tag) 
+static cuckoo_status _cuckoo_find(cuckoo_hashtable_t* h,const char *key,ValType *val,size_t i1,size_t i2,size_t keylock,char tag)
 {
     bool result;
 
