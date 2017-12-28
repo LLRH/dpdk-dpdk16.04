@@ -813,7 +813,7 @@ cuckoo_status cuckoo_insert(cuckoo_hashtable_t* h,const char *key,const char * v
 
     mutex_lock(&h->lock);
     
-    st = _cuckoo_find(h, key, &oldval, i1, i2, keylock,tag);
+    st = _cuckoo_find(h, key, (char*)&oldval, i1, i2, keylock,tag);
 
     if  (st == ok) {
         mutex_unlock(&h->lock);
