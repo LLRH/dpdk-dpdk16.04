@@ -961,7 +961,7 @@ control_register_t registerBuff[NUM_PTHREAD];
 bool isFull[NUM_PTHREAD];
 pthread_mutex_t buffLock[NUM_PTHREAD];
 pthread_cond_t buffCond[NUM_PTHREAD];
-
+uint64_t recoerCount;
 
 //这是mongoDB消费线程
 void * thread_mongoDB_fun(void *arg){
@@ -1190,7 +1190,9 @@ main(int argc, char **argv)
             printf("create thread successfully <i=%d>\n",i);
         }
     }
-
+    recoerCount=0;
+    uint64_t hz_timer = rte_get_timer_hz();
+    uint64_t cur_tsc1 = rte_rdtsc();
     for(i=0;i<NUM_CONN;i++){
         //TODO:用于恢复
         int pthread_create_result=0;
@@ -1202,6 +1204,10 @@ main(int argc, char **argv)
             printf("create thread successfully <i=%d>\n",i);
         }
     }
+    //TODO:等待所有线程恢复
+    pthread_join(thread_recover,NULL);
+    uint64_t cur_tsc2 = rte_rdtsc();
+    printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)

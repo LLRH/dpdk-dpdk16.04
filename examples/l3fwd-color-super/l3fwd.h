@@ -281,4 +281,5 @@ extern pthread_cond_t buffCond[NUM_PTHREAD];
 
 //TODO:不知道为啥？？？
 void* find_mongodb_all_func (void *arg);
+extern uint64_t recoerCount;
 #endif  /* __L3_FWD_H__ */

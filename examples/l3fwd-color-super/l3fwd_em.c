@@ -931,11 +931,6 @@ void* find_mongodb_all_func (void *arg)
     uint64_t allCount = mongoc_collection_count (
             collection_local, MONGOC_QUERY_NONE, query, 0, 0, NULL, &error);
 
-    printf("allCount=%"PRIu64" \n",allCount);
-
-    uint64_t hz_timer = rte_get_timer_hz();
-    uint64_t cur_tsc1 = rte_rdtsc();
-
     const bson_t * doc;
     uint64_t count=0;
 
@@ -948,7 +943,6 @@ void* find_mongodb_all_func (void *arg)
         str = bson_as_json (doc, NULL);
         //printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
         //TODO:暂时不解析
-
         char *field_str = (char *)L_SID;
         char value_str[100];
         if(Json_get_by_field(str, field_str, value_str)){
@@ -959,16 +953,12 @@ void* find_mongodb_all_func (void *arg)
                 printf("\033[5;34m Insert Error!\n \033[0m");
             }
         }
-
         count++;
         bson_free (str);
     }
     cuckoo_report(h);
-    printf("count = %"PRIu64" \n", count );
-
-    uint64_t cur_tsc2 = rte_rdtsc();
-    printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
-    printf("[About]Total duration= %f seconds for %"PRIu64" \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer*NUM_CONN,allCount*NUM_CONN);
+    printf("[%d]count = %"PRIu64"  allCount=%"PRIu64"\n", select,count ,allCount);
+    recoerCount+=count;
     bson_destroy (query);
     return 0;
 }
