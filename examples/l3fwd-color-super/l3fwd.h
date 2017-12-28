@@ -279,4 +279,6 @@ extern bool isFull[NUM_PTHREAD];
 extern pthread_mutex_t buffLock[NUM_PTHREAD];
 extern pthread_cond_t buffCond[NUM_PTHREAD];
 
+//TODO:不知道为啥？？？
+void* find_mongodb_all_func (void *arg);
 #endif  /* __L3_FWD_H__ */
