@@ -1193,6 +1193,7 @@ main(int argc, char **argv)
 
     for(i=0;i<NUM_CONN;i++){
         //TODO:用于恢复
+        int pthread_create_result=0;
         if( (pthread_create_result=pthread_create(&thread_recover[i],NULL,find_mongodb_all_func,(void*)&select[i]))!=0)
         {
             printf("can't create thread: %s\n",strerror(pthread_create_result));
@@ -1201,9 +1202,6 @@ main(int argc, char **argv)
             printf("create thread successfully <i=%d>\n",i);
         }
     }
-
-    //TODO:从数据库中恢复
-    void* find_mongodb_all_func (void *arg)
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)
