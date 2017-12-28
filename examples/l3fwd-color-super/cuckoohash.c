@@ -779,7 +779,7 @@ cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key, char *val
 }
 
 
-cuckoo_status cuckoo_find(cuckoo_hashtable_t* h,const char *key,const char *val)
+cuckoo_status cuckoo_find(cuckoo_hashtable_t* h,const char *key, char *val)
  {
 
     uint32_t hv    = _hashed_key(key);
