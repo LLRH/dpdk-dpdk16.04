@@ -1190,7 +1190,7 @@ main(int argc, char **argv)
             printf("create thread successfully <i=%d>\n",i);
         }
     }
-
+    usleep(1000000);
     int recover_flag;
     printf("Do you want to recover from MongoDB(0=false,other=true):");
     int res = scanf("%d",&recover_flag);

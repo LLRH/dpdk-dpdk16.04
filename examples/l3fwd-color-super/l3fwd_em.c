@@ -1484,7 +1484,7 @@ static struct sid_port_route sid_port_route_array2[]={
 */
 
 
-#define myhashpower 23
+#define myhashpower 25
 #define myhsahloader 0.00
 
 static long long number=(2<<(myhashpower+1))*myhsahloader;
