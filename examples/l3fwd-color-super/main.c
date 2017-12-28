@@ -1205,7 +1205,10 @@ main(int argc, char **argv)
         }
     }
     //TODO:等待所有线程恢复
-    pthread_join(&thread_recover,NULL);
+    for(i=0;i<NUM_CONN;i++){
+        pthread_join(thread_recover[i],NULL);
+    }
+
     uint64_t cur_tsc2 = rte_rdtsc();
     printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
 
