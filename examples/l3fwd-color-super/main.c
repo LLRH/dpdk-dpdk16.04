@@ -1156,15 +1156,15 @@ main(int argc, char **argv)
 	char* COLL_NAME_GLOBAL="REGISTER_INFO";
 	create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME_GLOBAL,&client,&database,&collection);
 
+    //TODO : NUM_PTHREAD == NUM_CONN
     pthread_t thread_mongoDB[NUM_PTHREAD];
+    pthread_t thread_recover[NUM_CONN];
 	//TODO:初始化每一个连接
 	int i;
 	for(i=0;i<NUM_CONN;i++){
 		char COLL_NAME[256];
 		sprintf(COLL_NAME,"%s_%d",COLL_NAME_GLOBAL,i);
 		create_a_collection_connection(DB_NAME_GLOBAL,COLL_NAME,&clients[i],&databases[i],&collections[i]);
-
-
         isFull[i]=false;
         pthread_mutex_init(&buffLock[i],NULL);
         pthread_cond_init(&buffCond[i],NULL);
@@ -1189,8 +1189,21 @@ main(int argc, char **argv)
         }else{
             printf("create thread successfully <i=%d>\n",i);
         }
-
     }
+
+    for(i=0;i<NUM_CONN;i++){
+        //TODO:用于恢复
+        if( (pthread_create_result=pthread_create(&thread_recover[i],NULL,find_mongodb_all_func,(void*)&select[i]))!=0)
+        {
+            printf("can't create thread: %s\n",strerror(pthread_create_result));
+            return 1;
+        }else{
+            printf("create thread successfully <i=%d>\n",i);
+        }
+    }
+
+    //TODO:从数据库中恢复
+    void* find_mongodb_all_func (void *arg)
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)
