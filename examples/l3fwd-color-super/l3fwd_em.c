@@ -933,7 +933,7 @@ void* find_mongodb_all_func (void *arg)
         //TODO：根据L_SID的最后一位求余数 判断
         collection_local=collections[select%NUM_CONN];
     }
-    printf("[From %s]Begin to recover\n",__func__,select);
+    printf("[From %s]%dBegin to recover\n",__func__,select);
 
     bson_t               *query;
     bson_error_t         error;

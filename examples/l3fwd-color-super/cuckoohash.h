@@ -144,7 +144,7 @@ cuckoo_status cuckoo_exit(cuckoo_hashtable_t* h);
  * 
  * @return ok if key is found, not_found otherwise
  */
-cuckoo_status cuckoo_find(cuckoo_hashtable_t* h, const V *key, char *val);
+cuckoo_status cuckoo_find(cuckoo_hashtable_t* h, const char *key, char *val);
 
 cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key, char *val,uint32_t hv,uint32_t i1);
 
