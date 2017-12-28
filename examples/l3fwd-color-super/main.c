@@ -1215,9 +1215,10 @@ main(int argc, char **argv)
             pthread_join(thread_recover[i], NULL);
         }
         _cuckoo_report(0);
+        uint64_t cur_tsc2 = rte_rdtsc();
+        printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
     }
-    uint64_t cur_tsc2 = rte_rdtsc();
-    printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
+
 
 	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
 		if (rte_lcore_is_enabled(lcore_id) == 0)
