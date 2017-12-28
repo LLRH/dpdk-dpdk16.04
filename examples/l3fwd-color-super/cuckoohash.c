@@ -353,7 +353,7 @@ static int _run_cuckoo(cuckoo_hashtable_t* h,size_t i1,size_t i2)
  *
  * @return true if key is found, false otherwise
  */
-static bool _try_read_from_bucket(cuckoo_hashtable_t* h,const char *key,ValType *val,size_t i,char tag)
+static bool _try_read_from_bucket(cuckoo_hashtable_t* h,const char *key,char *val,size_t i,char tag)
 {
     size_t  j;
 
@@ -486,7 +486,7 @@ TryRead:
 }
 
 
-static cuckoo_status _cuckoo_find(cuckoo_hashtable_t* h,const char *key,const ValType *val,size_t i1,size_t i2,size_t keylock,char tag)
+static cuckoo_status _cuckoo_find(cuckoo_hashtable_t* h,const char *key,const char *val,size_t i1,size_t i2,size_t keylock,char tag)
 {
     bool result;
 
@@ -513,7 +513,7 @@ TryRead:
 }
 
 
-static cuckoo_status _cuckoo_insert(cuckoo_hashtable_t* h,const char* key,const ValType * val,size_t i1,size_t i2,size_t keylock,char tag)
+static cuckoo_status _cuckoo_insert(cuckoo_hashtable_t* h,const char* key,const char * val,size_t i1,size_t i2,size_t keylock,char tag)
 {
 
     /*
@@ -758,7 +758,7 @@ cuckoo_find_bulk(cuckoo_hashtable_t *h, const void **keys,uint32_t num_keys, cha
 }
 
 
-cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key,const ValType *val,uint32_t hv,uint32_t i1)
+cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key,const char *val,uint32_t hv,uint32_t i1)
  {
 
    // uint32_t hv    = _hashed_key(key);
@@ -779,7 +779,7 @@ cuckoo_status cuckoo_find_batch(cuckoo_hashtable_t* h,const char *key,const ValT
 }
 
 
-cuckoo_status cuckoo_find(cuckoo_hashtable_t* h,const char *key,const ValType *val)
+cuckoo_status cuckoo_find(cuckoo_hashtable_t* h,const char *key,const char *val)
  {
 
     uint32_t hv    = _hashed_key(key);
@@ -801,7 +801,7 @@ cuckoo_status cuckoo_find(cuckoo_hashtable_t* h,const char *key,const ValType *v
 
 
 
-cuckoo_status cuckoo_insert(cuckoo_hashtable_t* h,const char *key,const ValType * val)
+cuckoo_status cuckoo_insert(cuckoo_hashtable_t* h,const char *key,const char * val)
 {
     uint32_t hv = _hashed_key(key);
     size_t i1   = _index_hash(h, hv);
