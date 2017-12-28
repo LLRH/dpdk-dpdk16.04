@@ -915,6 +915,18 @@ void _cuckoo_report(int socket){
 void* find_mongodb_all_func (void *arg)
 {
     int select = *(int *)arg;
+
+    //TODO:分布到别的逻辑核上
+    cpu_set_t mask;
+    _CPU_ZERO(&mask);
+    _CPU_SET(select%NUM_CORE, &mask);      //绑定cpu 从0开始
+    if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
+    {
+        printf("set affinity failed..\n");
+    }else{
+        printf("set affinity successfully..\n");
+    }
+
     mongoc_collection_t  *collection_local;
     collection_local=collection;
     if(NUM_CONN > 0){
