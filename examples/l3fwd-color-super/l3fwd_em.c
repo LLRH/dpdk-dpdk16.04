@@ -906,8 +906,8 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     return 0;
 }
 
-void _cuckoo_report(cuckoo_hashtable_t *h){
-    cuckoo_report(h);
+void _cuckoo_report(int socket){
+    cuckoo_report(sid_cuckoo_struct[socket]);
     return;
 }
 

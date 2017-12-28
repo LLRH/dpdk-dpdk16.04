@@ -1207,8 +1207,8 @@ main(int argc, char **argv)
     for(i=0;i<NUM_CONN;i++){
         pthread_join(thread_recover[i],NULL);
     }
-    _cuckoo_report(sid_cuckoo_struct[0]);
-    _cuckoo_report(sid_cuckoo_struct[1]);
+    _cuckoo_report(0);
+    _cuckoo_report(1);
 
     uint64_t cur_tsc2 = rte_rdtsc();
     printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
