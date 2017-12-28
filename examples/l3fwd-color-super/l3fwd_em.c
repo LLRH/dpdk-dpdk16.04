@@ -906,6 +906,72 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     return 0;
 }
 
+//TODO:线程程序，从数据库中恢复到hash表
+void* find_mongodb_all_func (void *arg)
+{
+    int select = *(int *)arg;
+    mongoc_collection_t  *collection_local;
+    collection_local=collection;
+    if(NUM_CONN > 0){
+        //TODO：根据L_SID的最后一位求余数 判断
+        collection_local=collections[select%NUM_CONN];
+    }
+
+    bson_t               *query;
+    bson_error_t         error;
+    char                 *str;
+
+    query=BCON_NEW
+            (
+                    NULL, NULL
+            );
+
+    uint64_t allCount = mongoc_collection_count (
+            collection_local, MONGOC_QUERY_NONE, query, 0, 0, NULL, &error);
+
+    printf("allCount=%"PRIu64" \n",allCount);
+
+    uint64_t hz_timer = rte_get_timer_hz();
+    uint64_t cur_tsc1 = rte_rdtsc();
+
+    const bson_t * doc;
+    uint64_t count=0;
+
+    cuckoo_hashtable_t *h;
+    struct sid_port_route item;
+    h=sid_cuckoo_struct[0];
+    cuckoo_report(h);
+    while (mongoc_cursor_next (cursor, &doc))
+    {
+        str = bson_as_json (doc, NULL);
+        //printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
+        //TODO:暂时不解析
+
+        char *field_str = (char *)L_SID;
+        char value_str[100];
+        if(Json_get_by_field(str, field_str, value_str)){
+            //DBG_wxb("value_str=%s\n", value_str);
+            convert_str_2_sid_port_route(value_str,&item);
+            cuckoo_status st=cuckoo_insert(h, (char *)&item.key_sid, (char *)&item.val_port);
+            if(st!=ok){
+                printf("\033[5;34m Insert Error!\n \033[0m");
+            }
+        }
+
+        count++;
+        bson_free (str);
+    }
+    cuckoo_report(h);
+    printf("count = %"PRIu64" \n", count );
+
+    uint64_t cur_tsc2 = rte_rdtsc();
+    printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
+    printf("[About]Total duration= %f seconds for %"PRIu64" \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer*NUM_CONN,allCount*NUM_CONN);
+    bson_destroy (query);
+    return 0;
+}
+
+
 //TODO:删除mongoDB数据库的内容
 int delete_mongodb (control_register_t *control_register_hdr, mongoc_collection_t  *collection_local)
 {
