@@ -906,6 +906,11 @@ int find_mongodb_all (CoLoR_get_t *get_hdr)
     return 0;
 }
 
+void _cuckoo_report(cuckoo_hashtable_t *h){
+    cuckoo_report(h);
+    return;
+}
+
 //TODO:线程程序，从数据库中恢复到hash表
 void* find_mongodb_all_func (void *arg)
 {
@@ -936,8 +941,7 @@ void* find_mongodb_all_func (void *arg)
 
     cuckoo_hashtable_t *h;
     struct sid_port_route item;
-    h=sid_cuckoo_struct[0];
-    cuckoo_report(h);
+    h=sid_cuckoo_struct[select%2];
     while (mongoc_cursor_next (cursor, &doc))
     {
         str = bson_as_json (doc, NULL);
@@ -956,7 +960,6 @@ void* find_mongodb_all_func (void *arg)
         count++;
         bson_free (str);
     }
-    cuckoo_report(h);
     printf("[%d]count = %"PRIu64"  allCount=%"PRIu64"\n", select,count ,allCount);
     recoerCount+=count;
     bson_destroy (query);
