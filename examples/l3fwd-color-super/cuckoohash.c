@@ -36,9 +36,9 @@
 #define bucketsize 4
 typedef struct {
     KeyType keys[bucketsize];    //36*4
-    ValType vals[bucketsize];    //4*4
-	char tags[bucketsize];       //4*4
-	char pading[40];             //40    40+(36+4+4)*4=152+40=192
+    ValType vals[bucketsize];    //1*4
+	char tags[bucketsize];       //1*4
+	//char pading[40];             //40    40+(36+4+4)*4=152+40=192
 }  __attribute__((__packed__))
 Bucket;
 
