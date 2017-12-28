@@ -353,7 +353,7 @@ static int _run_cuckoo(cuckoo_hashtable_t* h,size_t i1,size_t i2)
  *
  * @return true if key is found, false otherwise
  */
-static bool _try_read_from_bucket(cuckoo_hashtable_t* h,const char *key,char *val,size_t i,char tag)
+static bool _try_read_from_bucket(cuckoo_hashtable_t* h,const char *key,const char *val,size_t i,char tag)
 {
     size_t  j;
 
