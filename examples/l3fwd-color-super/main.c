@@ -973,7 +973,8 @@ void * thread_mongoDB_fun(void *arg){
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
     _CPU_ZERO(&mask);
-    _CPU_SET(0x03, &mask);      //绑定cpu 从0开始
+    //TODO:注册改用多个核！！！
+    _CPU_SET(select%(NUM_CORE-1)+1, &mask);      //绑定cpu 从0开始
     //0 代表对当前线程/进程进行设置。
     if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
     {
