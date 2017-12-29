@@ -110,9 +110,16 @@ static inline  uint32_t _hashed_key(const char* key) {
 static inline size_t _index_hash(cuckoo_hashtable_t* h, const uint32_t hv) 
 {
 //    return  (hv >> (32 - h->hashpower));
-    return  (hv & hashmask(h->hashpower));
+    return  (hv % (hashmask(h->hashpower)+1) );
 }
 
+/*
+static inline size_t _index_hash(cuckoo_hashtable_t* h, const uint32_t hv)
+{
+//    return  (hv >> (32 - h->hashpower));
+    return  (hv & hashmask(h->hashpower));
+}
+*/
 
 /**
  * @brief Compute the index of the second bucket
@@ -127,7 +134,7 @@ static inline size_t _alt_index(cuckoo_hashtable_t* h,const uint32_t hv,const si
     // 0x5bd1e995 is the hash constant from MurmurHash2
     //uint32_t tag = hv & 0xFF;
     uint32_t tag = hv >> 24;
-    return (index ^ (tag * 0x5bd1e995)) & hashmask(h->hashpower);
+    return (index ^ (tag * 0x5bd1e995)) % (hashmask(h->hashpower)+1);
 }
 
 /**
