@@ -96,7 +96,7 @@ static inline  uint32_t _hashed_key(const char* key) {
 }
 
 //TODO:克服2的指数增长！！！！
-#define hashsize(n) ((uint64_t) ((1 << n)*(1.4)))
+#define hashsize(n) ((uint64_t) ((1 << n)*(1.35)))
 #define hashmask(n) (hashsize(n) - 1)
 
 
