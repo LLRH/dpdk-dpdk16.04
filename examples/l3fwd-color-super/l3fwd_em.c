@@ -1011,7 +1011,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	static uint64_t remoteCounter = 0;
 	static uint64_t remoteSum = 0;
 
-	int recycle = 1000000;
+	int recycle = 1000000000;
 	int r=0;
 
     uint64_t hz_timer = rte_get_timer_hz();
