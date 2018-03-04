@@ -1008,17 +1008,17 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
     //uint64_t hz_timer = rte_get_timer_hz();
     //uint64_t cur_tsc1 = rte_rdtsc();
-	res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
+	//res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
     //uint64_t cur_tsc2 = rte_rdtsc();
     //printf("hz_timer=%"PRIu64" [Local] %"PRIu64" \n",hz_timer,cur_tsc2-cur_tsc1);
 
 	//TODO:SID在另外一个Socket的那个表上，当时有两个Socket,现在只有一个
-	if(next_hop==255){
-        uint64_t cur_tsc11 = rte_rdtsc();
+	//if(next_hop==255){
+        //uint64_t cur_tsc11 = rte_rdtsc();
         res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct_another_socket,&key_array[0] , 1,&next_hop );
-        uint64_t cur_tsc22 = rte_rdtsc();
+        //uint64_t cur_tsc22 = rte_rdtsc();
         //printf("hz_timer=%"PRIu64" [Remote] %"PRIu64" \n",hz_timer,cur_tsc22-cur_tsc11);
-    }
+    //}
 
 
 	if (next_hop >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << next_hop) == 0)
