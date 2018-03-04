@@ -1028,7 +1028,7 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
     }else{
 		localSum += (cur_tsc2-cur_tsc1);
 		localCounter++;
-		printf("hz_timer=%"PRIu64" [Local] %"PRIu64" \n",hz_timer,remoteSum/remoteCounter);
+		printf("hz_timer=%"PRIu64" [Local] %"PRIu64" \n",hz_timer,localSum/localCounter);
 	}
 
 
