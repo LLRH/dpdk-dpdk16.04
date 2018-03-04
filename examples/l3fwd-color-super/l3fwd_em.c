@@ -1005,12 +1005,16 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	memcpy(&key,&get_hdr->nid_sid[0],36);
 	const void * key_array[1]={&key};
 	int res=255;
-	res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );	
+
+    uint64_t hz_timer = rte_get_timer_hz();
+	res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
+    printf("%u\n",hz_timer);
+
 	//TODO:SID在另外一个Socket的那个表上，当时有两个Socket,现在只有一个
 	if(next_hop==255)
 		res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct_another_socket,&key_array[0] , 1,&next_hop );
 
-    printf("wenxingbeng\n");
+
 	if (next_hop >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << next_hop) == 0)
 	{
 		next_hop = portid;
