@@ -1006,10 +1006,10 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 	const void * key_array[1]={&key};
 	int res=255;
 
-	uint64_t localCounter = 0;
-	uint64_t localSum = 0;
-	uint64_t remoteCounter = 0;
-	uint64_t remoteSum = 0;
+	static uint64_t localCounter = 0;
+	static uint64_t localSum = 0;
+	static uint64_t remoteCounter = 0;
+	static uint64_t remoteSum = 0;
 
 
     uint64_t hz_timer = rte_get_timer_hz();
