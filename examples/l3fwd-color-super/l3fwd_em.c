@@ -770,7 +770,7 @@ int find_mongodb (CoLoR_get_t *get_hdr)
 	while (mongoc_cursor_next (cursor, &doc)) 
 	{
 		str = bson_as_json (doc, NULL);
-		printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
+//		printf ("[FROM %s] MongoDB %s\n", __FUNCTION__,str);
 
         char *field_str = "l_sid";
         char value_str[100];
@@ -999,19 +999,17 @@ em_get_dst_port_pumpking(const struct lcore_conf *qconf, struct rte_mbuf *pkt,ui
 
 	#endif
 	
+
 	CoLoR_get_t * get_hdr=(CoLoR_get_t *)( (uint8_t*)ipv4_hdr+sizeof(struct ipv4_hdr ) );	
 
 	memcpy(&key,&get_hdr->nid_sid[0],36);
 	const void * key_array[1]={&key};
-	int res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );
-	
+	int res=255;
+	res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct,&key_array[0] , 1,&next_hop );	
 	//TODO:SID在另外一个Socket的那个表上，当时有两个Socket,现在只有一个
-/*
 	if(next_hop==255)
-	{
 		res=cuckoo_find_bulk_batch( qconf->sid_lookup_struct_another_socket,&key_array[0] , 1,&next_hop );
-	}	
-*/	
+
 	if (next_hop >= RTE_MAX_ETHPORTS ||(enabled_port_mask & 1 << next_hop) == 0)
 	{
 		next_hop = portid;
@@ -1256,10 +1254,10 @@ static struct sid_port_route sid_port_route_array1[]={
 };
 //For Socket2
 static struct sid_port_route sid_port_route_array2[]={
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,4}, 4},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,5}, 5},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,6}, 6},
-	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,7}, 7},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,4}, 0},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,5}, 1},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,6}, 2},
+	{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,0,0,0,0,7}, 3},
 };
 */
 
